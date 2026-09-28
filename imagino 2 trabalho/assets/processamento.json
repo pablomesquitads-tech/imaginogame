@@ -2,16 +2,105 @@
   "_leia": "Fase 3. Cole aqui o JSON gerado por ferramentas/anotador.html (um item por id do manifesto) e rode: node build/processar.mjs. Coordenadas em pixels da imagem ORIGINAL. Chaves começando com _ são ignoradas.",
   "_exemplo-imagem": {
     "original": "assets/originais/<arquivo baixado>",
-    "recorte": [0, 0, 512, 512],
-    "cobrir": [[10, 480, 200, 24]],
+    "recorte": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "cobrir": [
+      [
+        10,
+        480,
+        200,
+        24
+      ]
+    ],
     "largura": 1024,
-    "anotacoes": [{ "tipo": "circulo", "x": 250, "y": 240, "r": 30 }, { "tipo": "seta", "x1": 400, "y1": 80, "x2": 280, "y2": 210 }]
+    "anotacoes": [
+      {
+        "tipo": "circulo",
+        "x": 250,
+        "y": 240,
+        "r": 30
+      },
+      {
+        "tipo": "seta",
+        "x1": 400,
+        "y1": 80,
+        "x2": 280,
+        "y2": 210
+      }
+    ]
   },
   "_exemplo-pilha": {
     "tipo": "pilha",
     "originais": "assets/originais/<pasta com os cortes em ordem>",
-    "recorte": [0, 0, 512, 512],
+    "recorte": [
+      0,
+      0,
+      512,
+      512
+    ],
     "largura": 768,
     "fps": 8
+  },
+  "img-01": {
+    "original": "assets/originais/img-01.jpeg",
+    "largura": 1024,
+    "anotacoes": [
+      {
+        "tipo": "seta",
+        "x1": 77,
+        "y1": 463,
+        "x2": 132,
+        "y2": 429,
+        "fonte": "calcification"
+      }
+    ]
+  },
+  "img-02": {
+    "original": "assets/originais/img-02.jpeg",
+    "largura": 1024,
+    "anotacoes": [
+      {
+        "tipo": "seta",
+        "x1": 235,
+        "y1": 307,
+        "x2": 283,
+        "y2": 262,
+        "fonte": "ring-like contrast enhancement"
+      }
+    ]
+  },
+  "img-03": {
+    "original": "assets/originais/img-03.jpeg",
+    "largura": 1024,
+    "anotacoes": [
+      {
+        "tipo": "seta",
+        "x1": 169,
+        "y1": 263,
+        "x2": 203,
+        "y2": 230,
+        "fonte": "brain edema"
+      }
+    ]
+  },
+  "img-04": {
+    "original": "assets/originais/img-04.jpeg",
+    "largura": 1024
+  },
+  "pilha-01": {
+    "tipo": "pilha",
+    "originais": "assets/originais/pilha-01",
+    "largura": 1024,
+    "fps": 8
+  },
+  "pilha-02": {
+    "tipo": "pilha",
+    "originais": "assets/originais/pilha-02",
+    "largura": 1024,
+    "fps": 6
   }
 }

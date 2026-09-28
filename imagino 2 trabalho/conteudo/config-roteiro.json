@@ -1,19 +1,50 @@
 {
   "_leia": "Liga o texto de roteiro.md às mídias do manifesto. Usado por build/roteiro-para-cenas.mjs. O texto das cenas vem só do roteiro.",
-  "meta": { "titulo": "Caso clínico", "alvo_total_s": 600, "teto_s": 1200 },
-  "capa": { "subtitulo": null },
-  "personagens": { "N": "Triagem", "P": "Marcos", "A": "Daniela" },
-  "ilustracao": { "historia-fala": "pac-01" },
+  "meta": {
+    "titulo": "Caso clínico",
+    "alvo_total_s": 600,
+    "teto_s": 1200
+  },
+  "capa": {
+    "subtitulo": null
+  },
+  "personagens": {
+    "N": "Triagem",
+    "P": "Marcos",
+    "A": "Daniela"
+  },
+  "ilustracao": {
+    "historia-fala": "pac-01"
+  },
   "imagens": {
     "resultado-tc": [
-      { "manifesto_id": "img-01", "anotacao": "img-01-anot", "pilha": "pilha-01", "corte_chave": null, "rotulo": "TC sem contraste · axial" }
+      {
+        "manifesto_id": "img-01",
+        "anotacao": "img-01-anot",
+        "pilha": "pilha-01",
+        "corte_chave": 10,
+        "rotulo": "TC sem contraste · axial"
+      }
     ],
     "resultado-rm": [
-      { "manifesto_id": "img-02", "anotacao": "img-02-anot", "rotulo": "T1 pós-gadolínio" },
-      { "manifesto_id": "img-03", "anotacao": "img-03-anot", "rotulo": "FLAIR" }
+      {
+        "manifesto_id": "img-02",
+        "anotacao": "img-02-anot",
+        "rotulo": "T1 pós-contraste"
+      },
+      {
+        "manifesto_id": "img-03",
+        "anotacao": "img-03-anot",
+        "rotulo": "FLAIR"
+      }
     ],
     "revelacao": [
-      { "manifesto_id": "img-04", "anotacao": "img-04-anot", "pilha": "pilha-02", "corte_chave": null, "rotulo": "T2 3D de alta resolução" }
+      {
+        "manifesto_id": "img-04",
+        "pilha": "pilha-02",
+        "corte_chave": 8,
+        "rotulo": "T1 pós-contraste · cortes finos"
+      }
     ]
   }
 }

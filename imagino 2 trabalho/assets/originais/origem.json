@@ -1,0 +1,84 @@
+{
+ "img-01": {
+  "estudo": "155518",
+  "serie": 652701,
+  "plano": "Axial",
+  "seq": "non-contrast",
+  "corte": 126,
+  "n_cortes": 245,
+  "frame_id": 67769283,
+  "marcas": [
+   {
+    "rotulo_fonte": "calcification",
+    "x": 132,
+    "y": 429,
+    "rot_x": 65,
+    "rot_y": 471
+   }
+  ]
+ },
+ "pilha-01": {
+  "estudo": "155518",
+  "serie": 652701,
+  "cortes": [
+   116,
+   166
+  ],
+  "corte_chave_idx": 10
+ },
+ "img-02": {
+  "estudo": "155516",
+  "serie": 652685,
+  "plano": "Axial",
+  "seq": "T1 C+ fat sat",
+  "corte": 95,
+  "n_cortes": 176,
+  "frame_id": 67767360,
+  "marcas": [
+   {
+    "rotulo_fonte": "ring-like contrast enhancement",
+    "x": 283,
+    "y": 262,
+    "rot_x": 202,
+    "rot_y": 338
+   }
+  ]
+ },
+ "img-03": {
+  "estudo": "155516",
+  "serie": 652690,
+  "plano": "Axial",
+  "seq": "FLAIR",
+  "corte": 15,
+  "n_cortes": 24,
+  "frame_id": 67767706,
+  "marcas": [
+   {
+    "rotulo_fonte": "brain edema",
+    "x": 203,
+    "y": 230,
+    "rot_x": 159,
+    "rot_y": 272
+   }
+  ]
+ },
+ "img-04": {
+  "estudo": "110253",
+  "serie": 478890,
+  "plano": "Axial",
+  "seq": "T1 C+",
+  "corte": 115,
+  "n_cortes": 180,
+  "frame_id": 55728095,
+  "marcas": []
+ },
+ "pilha-02": {
+  "estudo": "110253",
+  "serie": 478890,
+  "cortes": [
+   107,
+   123
+  ],
+  "corte_chave_idx": 8
+ }
+}

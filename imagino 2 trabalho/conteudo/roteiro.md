@@ -213,9 +213,9 @@ STATUS: RASCUNHO — aguardando aprovação
 - tipo: resultado
 - caminho_ideal: sim
 - tempo_alvo_s: 45
-- legenda: TC DE CRÂNIO SEM CONTRASTE — Calcificações puntiformes no parênquima cerebral (setas). Área hipodensa frontoparietal esquerda, com discreto efeito de massa. Sem hemorragia. Ventrículos de calibre normal. Sugerido complemento com RM de crânio.
-- fala (leitor **N**): "A TC mostra pontos de cálcio no parênquima e uma área hipodensa à esquerda. Para caracterizar a lesão, o radiologista sugere RM."
-- notas: Ativar a camada de anotação (tecla A) sobre as calcificações. Descrição da lesão hipodensa e da localização **deve ser ajustada ao caso real escolhido** (decisão D1). Não afirmar número de calcificações (depende da imagem).
+- legenda: TC DE CRÂNIO SEM CONTRASTE — Múltiplas áreas hiperdensas no parênquima cerebelar, algumas com calcificação interna (seta) e outras com hipodensidade ao redor (edema). Sugerido complemento com RM de crânio.
+- fala (leitor **N**): "A TC mostra áreas densas no cerebelo, algumas com cálcio e outras com edema ao redor. Para caracterizar as lesões, o radiologista sugere RM."
+- notas: Ativar a camada de anotação (tecla A): a seta é a do autor do caso ("calcification"). ↑/↓ percorrem 51 cortes. [AJUSTADO À IMAGEM: laudo reescrito a partir da descrição da fonte, caso rID 197449; a TC do caso não descreve lesão hipodensa frontoparietal.] Não afirmar número de calcificações.
 - referência: TC como método mais sensível para calcificação: R3, R5 [VERIFICAR passagem]; R1 (papel da TC).
 
 ---
@@ -227,9 +227,9 @@ STATUS: RASCUNHO — aguardando aprovação
 - tipo: resultado
 - caminho_ideal: sim
 - tempo_alvo_s: 45
-- legenda: RM DE CRÂNIO COM CONTRASTE — T1 pós-gadolínio: lesão com realce periférico em anel, frontoparietal esquerda. FLAIR: edema perilesional. Calcificações puntiformes já vistas na TC. Diferencial do realce anelar: abscesso, tuberculoma, toxoplasmose, glioma de alto grau, metástase.
-- fala (leitor **N**): "A RM mostra uma lesão com realce em anel e edema ao redor. O diferencial do realce anelar é amplo. Como vocês vão separar essas possibilidades?"
-- notas: Ativar anotação no anel. A lista do diferencial omite de propósito a hipótese diagnóstica do caso; a turma deve chegar a ela pela imagem. Se a turma disser "tuberculoma", "toxoplasmose" etc., valorizar o raciocínio e pedir que digam que achado de imagem os separaria. Discussão de DWI/ADC e espectroscopia pode ser mencionada, mas o Menu 3 quer uma etapa de caracterização não invasiva do interior da lesão.
+- legenda: RM DE CRÂNIO COM CONTRASTE — Múltiplas lesões nodulares supra e infratentoriais, na transição entre substância cinzenta e branca. A maior, temporoparietal esquerda: realce periférico em anel (T1 pós-contraste), edema ao redor (FLAIR), sem restrição à difusão. Diferencial do realce anelar: abscesso, tuberculoma, toxoplasmose, glioma de alto grau, metástase.
+- fala (leitor **N**): "A RM mostra várias lesões; a maior tem realce em anel e edema ao redor. O diferencial do realce anelar é amplo. Como vocês vão separar essas possibilidades?"
+- notas: [AJUSTADO À IMAGEM: laudo a partir da descrição da fonte, rID 197449, mesmo paciente da TC.] Ativar anotação (setas do autor: "ring-like contrast enhancement" e "brain edema"). A lista do diferencial omite de propósito a hipótese diagnóstica do caso; a turma deve chegar a ela pela imagem. Se a turma disser "tuberculoma", "toxoplasmose" etc., valorizar o raciocínio e pedir que digam que achado de imagem os separaria. Discussão de DWI/ADC e espectroscopia pode ser mencionada, mas o Menu 3 quer uma etapa de caracterização não invasiva do interior da lesão.
 - referência: Realce anelar e diferencial: R3, R4 [VERIFICAR passagens]; R1 (papel da RM).
 
 ### id: menu-diferencial-3
@@ -242,7 +242,7 @@ STATUS: RASCUNHO — aguardando aprovação
   - [1] rótulo: Iniciar esquema tuberculostático empírico | destino: cons-m3-tb | custo: 3 | correta: não | justificativa: Tratamento empírico sem hipótese sustentada: toxicidade e diagnóstico adiado.
   - [2] rótulo: Encaminhar para biópsia estereotáxica imediata | destino: cons-m3-biopsia | custo: 3 | correta: não | justificativa: Procedimento invasivo antes de esgotar a caracterização não invasiva.
   - [3] rótulo: Repetir a TC com contraste e reavaliar | destino: cons-m3-tc | custo: 2 | correta: não | justificativa: Repetir exame de menor resolução: radiação e custo sem informação nova.
-  - [4] rótulo: Complementar a RM com T2 3D de alta resolução e difusão, olhando o interior da lesão | destino: revelacao | custo: 1 | correta: sim | justificativa: Caracteriza o conteúdo e o interior da lesão sem procedimento invasivo.
+  - [4] rótulo: Complementar a RM com cortes finos de alta resolução, olhando o interior da lesão | destino: revelacao | custo: 1 | correta: sim | justificativa: Caracteriza o conteúdo e o interior da lesão sem procedimento invasivo.
 - notas: Custo 1 da opção correta compõe o custo do caminho ideal (D5). O texto da opção 4 não nomeia o achado. Ordem embaralhável no build.
 - referência: Uso de sequências de alta resolução para identificar o escólex: R1, R3 [VERIFICAR nome exato das sequências, ex.: CISS/FIESTA/3D T2]. Biópsia raramente necessária: R1 [VERIFICAR passagem].
 
@@ -303,9 +303,9 @@ STATUS: RASCUNHO — aguardando aprovação
 - tipo: revelacao
 - caminho_ideal: sim
 - tempo_alvo_s: 45
-- legenda: NEUROCISTICERCOSE. RM 3D T2 de alta resolução: lesão cística com escólex visível (ponto excêntrico no interior). Critério ABSOLUTO — Del Brutto 2017.
+- legenda: NEUROCISTICERCOSE. RM T1 pós-contraste em cortes finos: realce da parede do cisto e do escólex, o ponto no interior (cisto com ponto), fase coloidal. Critério ABSOLUTO — Del Brutto 2017.
 - fala (leitor **N**): "O interior da lesão mostra o escólex. É neurocisticercose: a forma larvária da Taenia solium no sistema nervoso central."
-- notas: Primeira menção ao diagnóstico. Ativar a anotação (tecla A) sobre o escólex; mostrar par limpo/anotado. Nome do sinal para a discussão oral: "cisto com ponto excêntrico" (descrição clássica em inglês: *hole-with-dot*). A fase evolutiva vinculada a um cisto com escólex e realce da parede (vesicular/coloidal-vesicular) depende da imagem real: usar a descrição do caso na fonte, não a minha (regra 1A.4). Crédito (autor + rID) gerado pelo build; URL só no fechamento.
+- notas: [AJUSTADO À IMAGEM: imagem de OUTRO paciente (rID 92354, lesão parietal esquerda única), porque o caso da TC/RM não descreve escólex. Apresentar como "o mesmo achado, em corte fino". A fonte descreve fase coloidal e cisto com ponto. Sem seta na fonte: ↑/↓ percorrem 17 cortes.] Primeira menção ao diagnóstico. Ativar a anotação (tecla A) sobre o escólex; mostrar par limpo/anotado. Nome do sinal para a discussão oral: "cisto com ponto excêntrico" (descrição clássica em inglês: *hole-with-dot*). A fase evolutiva vinculada a um cisto com escólex e realce da parede (vesicular/coloidal-vesicular) depende da imagem real: usar a descrição do caso na fonte, não a minha (regra 1A.4). Crédito (autor + rID) gerado pelo build; URL só no fechamento.
 - referência: Escólex no cisto = critério absoluto: R2. Aspecto de imagem do cisto com escólex: R3, R4 [VERIFICAR passagens].
 
 ---
@@ -341,7 +341,7 @@ STATUS: RASCUNHO — aguardando aprovação
 - tipo: expositiva
 - caminho_ideal: sim
 - tempo_alvo_s: 40
-- legenda: PISTAS DE IMAGEM → CRITÉRIOS 1) Escólex dentro do cisto (RM 3D T2) → ABSOLUTO. 2) Calcificações parenquimatosas típicas (TC) → NEUROIMAGEM, MAIOR. 3) Lesão com realce em anel (RM) → NEUROIMAGEM, MAIOR.
+- legenda: PISTAS DE IMAGEM → CRITÉRIOS 1) Escólex dentro do cisto (RM, cortes finos) → ABSOLUTO. 2) Calcificações parenquimatosas típicas (TC) → NEUROIMAGEM, MAIOR. 3) Lesão com realce em anel (RM) → NEUROIMAGEM, MAIOR.
 - fala (leitor **N**): "Cada pista de imagem cai numa categoria. O escólex é critério absoluto. As calcificações típicas e a lesão com realce são critérios de neuroimagem maiores."
 - notas: Confirmativos (resolução do cisto após antiparasitário; resolução espontânea de lesão única com realce; migração de cisto ventricular) **não se aplicam** neste momento do caso (sem seguimento). Menores (hidrocefalia, realce leptomeníngeo) **não foram descritos**. Dizer isso em voz alta fecha as quatro categorias de neuroimagem.
 - referência: R2 (categorias: absoluto; neuroimagem maior/confirmativo/menor; clínico/exposição), confirmadas pelo resumo no PubMed; conferir enunciados no texto completo [VERIFICAR].

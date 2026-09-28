@@ -254,6 +254,7 @@ seminario/                  (pasta de trabalho — nome livre)
 | Duração-alvo do caminho ideal | **~10 min**, com os **3 menus** mantidos e os **blocos 7–8 enxutos** (no máximo 3 ideias por cena) | `meta.alvo_total_s = 600` e `teto_s = 1200` no `cenas.json`; o painel do apresentador marca o tempo contra 10:00 e 20:00. Excede em ~2 min os 8 min nominais (seção 0) |
 | Paciente | **Ilustração estática com animação CSS**. Vídeo gerado descartado | SVG embutido no HTML no build: respiração, piscar e boca de quem fala; quem não fala fica esmaecido. Regra 1.2 vale: sem sinal clínico desenhado, linha `ilustracao` no manifesto |
 | Título e capa | **"Caso clínico"** (provisório) | `meta.titulo` no `cenas.json` alimenta a capa e o `<title>`; trocar só ali. Passa pela checagem de sigilo |
+| Escolha das imagens (fase 2b) | **Delegada ao Claude** pelo usuário; termos do Radiopaedia atestados pelo usuário | Substitui, desta vez, a marcação do candidato pelo usuário (1A.3). Continua valendo a 1A.4: achados e setas vêm da fonte. Ver `assets/candidatos/revisao.md` |
 
 ### Pendentes
 
@@ -262,7 +263,8 @@ seminario/                  (pasta de trabalho — nome livre)
 | Cores `certo` / `errado` (seção 7) | `#5FB38A` / `#D9695F` no piloto; confirmar no projetor real |
 | Painel sobreposto (uma tela só) mostra a opção correta e as notas | Aceitável só se ninguém usar uma tela; com o projetor espelhado, o painel vaza a resposta. Alternativa: esconder a marca de correta no modo sobreposto |
 | `roteiro.md` (D3) ainda propõe outro título | Alinhar D3 a "Caso clínico" na aprovação do roteiro |
-| Rede da sessão de nuvem bloqueia radiopaedia.org | Liberar `radiopaedia.org` e `*.radiopaedia.org` no ambiente, ou rodar a fase 2b no Claude Code local |
+| Revelação com imagem de outro paciente | O caso da TC/RM (rID 197449) não descreve escólex; a Revelação usa o rID 92354. Aceitar, ou buscar um caso único que tenha os três achados |
+| Idade do paciente | Imagens de homem de 60 anos; o roteiro diz 34. Ajustar a fala ou manter |
 | Ordem das opções nos menus | A correta é 3, 3 e 4 nos menus 1–3; o roteiro sugere embaralhar. Trocar as teclas no próprio `roteiro.md` |
 
 ---

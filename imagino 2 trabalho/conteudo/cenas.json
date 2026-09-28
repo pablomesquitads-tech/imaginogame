@@ -239,11 +239,11 @@
       "id": "resultado-tc",
       "bloco": 4,
       "tipo": "resultado",
-      "fala": "A TC mostra pontos de cálcio no parênquima e uma área hipodensa à esquerda. Para caracterizar a lesão, o radiologista sugere RM.",
+      "fala": "A TC mostra áreas densas no cerebelo, algumas com cálcio e outras com edema ao redor. Para caracterizar as lesões, o radiologista sugere RM.",
       "secoes": [
         {
           "titulo": "TC DE CRÂNIO SEM CONTRASTE",
-          "texto": "Calcificações puntiformes no parênquima cerebral (setas). Área hipodensa frontoparietal esquerda, com discreto efeito de massa. Sem hemorragia. Ventrículos de calibre normal. Sugerido complemento com RM de crânio."
+          "texto": "Múltiplas áreas hiperdensas no parênquima cerebelar, algumas com calcificação interna (seta) e outras com hipodensidade ao redor (edema). Sugerido complemento com RM de crânio."
         }
       ],
       "imagens": [
@@ -251,28 +251,29 @@
           "manifesto_id": "img-01",
           "anotacao": "img-01-anot",
           "pilha": "pilha-01",
+          "corte_chave": 10,
           "rotulo": "TC sem contraste · axial"
         }
       ],
-      "notas": "Ativar a camada de anotação (tecla A) sobre as calcificações. Descrição da lesão hipodensa e da localização deve ser ajustada ao caso real escolhido (decisão D1). Não afirmar número de calcificações (depende da imagem).",
+      "notas": "Ativar a camada de anotação (tecla A): a seta é a do autor do caso (\"calcification\"). ↑/↓ percorrem 51 cortes. [AJUSTADO À IMAGEM: laudo reescrito a partir da descrição da fonte, caso rID 197449; a TC do caso não descreve lesão hipodensa frontoparietal.] Não afirmar número de calcificações.",
       "tempo_alvo_s": 45
     },
     {
       "id": "resultado-rm",
       "bloco": 5,
       "tipo": "resultado",
-      "fala": "A RM mostra uma lesão com realce em anel e edema ao redor. O diferencial do realce anelar é amplo. Como vocês vão separar essas possibilidades?",
+      "fala": "A RM mostra várias lesões; a maior tem realce em anel e edema ao redor. O diferencial do realce anelar é amplo. Como vocês vão separar essas possibilidades?",
       "secoes": [
         {
           "titulo": "RM DE CRÂNIO COM CONTRASTE",
-          "texto": "T1 pós-gadolínio: lesão com realce periférico em anel, frontoparietal esquerda. FLAIR: edema perilesional. Calcificações puntiformes já vistas na TC. Diferencial do realce anelar: abscesso, tuberculoma, toxoplasmose, glioma de alto grau, metástase."
+          "texto": "Múltiplas lesões nodulares supra e infratentoriais, na transição entre substância cinzenta e branca. A maior, temporoparietal esquerda: realce periférico em anel (T1 pós-contraste), edema ao redor (FLAIR), sem restrição à difusão. Diferencial do realce anelar: abscesso, tuberculoma, toxoplasmose, glioma de alto grau, metástase."
         }
       ],
       "imagens": [
         {
           "manifesto_id": "img-02",
           "anotacao": "img-02-anot",
-          "rotulo": "T1 pós-gadolínio"
+          "rotulo": "T1 pós-contraste"
         },
         {
           "manifesto_id": "img-03",
@@ -280,7 +281,7 @@
           "rotulo": "FLAIR"
         }
       ],
-      "notas": "Ativar anotação no anel. A lista do diferencial omite de propósito a hipótese diagnóstica do caso; a turma deve chegar a ela pela imagem. Se a turma disser \"tuberculoma\", \"toxoplasmose\" etc., valorizar o raciocínio e pedir que digam que achado de imagem os separaria. Discussão de DWI/ADC e espectroscopia pode ser mencionada, mas o Menu 3 quer uma etapa de caracterização não invasiva do interior da lesão.",
+      "notas": "[AJUSTADO À IMAGEM: laudo a partir da descrição da fonte, rID 197449, mesmo paciente da TC.] Ativar anotação (setas do autor: \"ring-like contrast enhancement\" e \"brain edema\"). A lista do diferencial omite de propósito a hipótese diagnóstica do caso; a turma deve chegar a ela pela imagem. Se a turma disser \"tuberculoma\", \"toxoplasmose\" etc., valorizar o raciocínio e pedir que digam que achado de imagem os separaria. Discussão de DWI/ADC e espectroscopia pode ser mencionada, mas o Menu 3 quer uma etapa de caracterização não invasiva do interior da lesão.",
       "tempo_alvo_s": 45
     },
     {
@@ -315,7 +316,7 @@
         },
         {
           "tecla": 4,
-          "rotulo": "Complementar a RM com T2 3D de alta resolução e difusão, olhando o interior da lesão",
+          "rotulo": "Complementar a RM com cortes finos de alta resolução, olhando o interior da lesão",
           "destino": "revelacao",
           "custo": 1,
           "correta": true,
@@ -362,18 +363,18 @@
       "titulo": "Neurocisticercose",
       "secoes": [
         {
-          "texto": "RM 3D T2 de alta resolução: lesão cística com escólex visível (ponto excêntrico no interior). Critério ABSOLUTO — Del Brutto 2017."
+          "texto": "RM T1 pós-contraste em cortes finos: realce da parede do cisto e do escólex, o ponto no interior (cisto com ponto), fase coloidal. Critério ABSOLUTO — Del Brutto 2017."
         }
       ],
       "imagens": [
         {
           "manifesto_id": "img-04",
-          "anotacao": "img-04-anot",
           "pilha": "pilha-02",
-          "rotulo": "T2 3D de alta resolução"
+          "corte_chave": 8,
+          "rotulo": "T1 pós-contraste · cortes finos"
         }
       ],
-      "notas": "Primeira menção ao diagnóstico. Ativar a anotação (tecla A) sobre o escólex; mostrar par limpo/anotado. Nome do sinal para a discussão oral: \"cisto com ponto excêntrico\" (descrição clássica em inglês: hole-with-dot). A fase evolutiva vinculada a um cisto com escólex e realce da parede (vesicular/coloidal-vesicular) depende da imagem real: usar a descrição do caso na fonte, não a minha (regra 1A.4). Crédito (autor + rID) gerado pelo build; URL só no fechamento.",
+      "notas": "[AJUSTADO À IMAGEM: imagem de OUTRO paciente (rID 92354, lesão parietal esquerda única), porque o caso da TC/RM não descreve escólex. Apresentar como \"o mesmo achado, em corte fino\". A fonte descreve fase coloidal e cisto com ponto. Sem seta na fonte: ↑/↓ percorrem 17 cortes.] Primeira menção ao diagnóstico. Ativar a anotação (tecla A) sobre o escólex; mostrar par limpo/anotado. Nome do sinal para a discussão oral: \"cisto com ponto excêntrico\" (descrição clássica em inglês: hole-with-dot). A fase evolutiva vinculada a um cisto com escólex e realce da parede (vesicular/coloidal-vesicular) depende da imagem real: usar a descrição do caso na fonte, não a minha (regra 1A.4). Crédito (autor + rID) gerado pelo build; URL só no fechamento.",
       "tempo_alvo_s": 45
     },
     {
@@ -411,7 +412,7 @@
       "fala": "Cada pista de imagem cai numa categoria. O escólex é critério absoluto. As calcificações típicas e a lesão com realce são critérios de neuroimagem maiores.",
       "titulo": "Pistas de imagem → critérios",
       "itens": [
-        "Escólex dentro do cisto (RM 3D T2) → ABSOLUTO.",
+        "Escólex dentro do cisto (RM, cortes finos) → ABSOLUTO.",
         "Calcificações parenquimatosas típicas (TC) → NEUROIMAGEM, MAIOR.",
         "Lesão com realce em anel (RM) → NEUROIMAGEM, MAIOR."
       ],
