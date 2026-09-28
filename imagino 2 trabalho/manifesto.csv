@@ -1,0 +1,4 @@
+id,requisito,arquivo_original,arquivo_neutro,bloco,cena,tipo,modalidade,sequencia_janela,fonte,autor,rid_ou_ref,url,licenca,licenca_verificada,aprovado_usuario,texto_gravado_na_imagem,anotacao_prevista,status
+img-01,req-01,assets/originais/[nome como baixado],assets/processadas/img-01.webp,4,resultado-tc,radiologia,TC,[sem contraste / janela],Radiopaedia,[autor],[rID],[url — nunca exibida antes da Revelação],CC BY-NC-SA 3.0,nao,nao,[sim/não],[achado a marcar na camada anotada],candidato
+pilha-01,req-02,assets/originais/[série],assets/pilhas/pilha-01/,5,resultado-rm,pilha,RM,[sequência],Radiopaedia,[autor],[rID],[url],CC BY-NC-SA 3.0,nao,nao,[sim/não],[achado],candidato
+pac-01,—,assets/originais/[nome],assets/paciente/pac-01.webp,2,fala-1,ilustracao,—,—,gerado — [ferramenta],—,—,—,—,sim,nao,nao,—,pendente
