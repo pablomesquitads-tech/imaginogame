@@ -1,0 +1,14 @@
+/* Tokens do sistema visual (CLAUDE.md, seção 7). */
+:root {
+  --fundo: #0B0D10;
+  --superficie: #15181D;
+  --superficie-2: #1D2128;
+  --borda: #2A2F37;
+  --texto: #E8E6E1;
+  --texto-sec: #9AA0A8;
+  --acento: #F2A900;   /* exclusivo para anotações de achado */
+  --certo: #5FB38A;    /* proposta do piloto — a confirmar */
+  --errado: #D9695F;   /* proposta do piloto — a confirmar */
+  --f-corpo: "Inter", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}

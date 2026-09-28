@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "titulo": "Caso clínico",
+    "subtitulo": "Piloto do motor — conteúdo fictício",
+    "alvo_total_s": 600,
+    "teto_s": 1200
+  },
+  "cenas": [
+    {
+      "id": "abertura-capa", "bloco": 1, "tipo": "expositiva", "layout": "capa",
+      "titulo": "Caso clínico",
+      "legenda": "Piloto do motor · conteúdo fictício, só para testar",
+      "notas": "PILOTO. Conectar o HDMI em modo Estender (Win+P), pressionar P e arrastar o painel para a tela do notebook. F para tela cheia nesta janela.",
+      "tempo_alvo_s": 10
+    },
+    {
+      "id": "abertura-regras", "bloco": 1, "tipo": "expositiva",
+      "titulo": "Como funciona",
+      "itens": [
+        "A turma decide cada conduta levantando o braço; vale a maioria.",
+        "Conduta errada custa pontos de tempo e recursos.",
+        "Objetivo: chegar ao diagnóstico com o menor custo."
+      ],
+      "fala": "Vocês são a equipe de plantão. Em cada decisão, levantem o braço pela conduta que escolherem; vale a maioria. Conduta errada custa pontos.",
+      "notas": "Mostrar o custo em 0 no canto. Avisar que, após 2 erros no mesmo menu, o preceptor dá uma dica.",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "historia-fala", "bloco": 2, "tipo": "fala",
+      "ilustracao": "pac-tst-01",
+      "personagens": { "N": "Triagem", "P": "Seu Joaquim", "A": "Dona Célia" },
+      "legendas": [
+        { "quem": "N", "texto": "Joaquim, 61 anos, chega ao pronto atendimento com a esposa, Célia. Personagem fictício do piloto." },
+        { "quem": "P", "texto": "Doutor, eu desci a escada da varanda meio com pressa e o pé virou pra dentro. Deu um estalo." },
+        { "quem": "A", "texto": "Ele ainda quis andar até o carro, mas foi mancando. Eu que insisti pra gente vir." },
+        { "quem": "P", "texto": "Dói aqui do lado, perto do osso. Inchou rápido. Consigo pisar, mas dói bastante." }
+      ],
+      "notas": "Cena de teste da legenda sincronizada: cada → avança um trecho e destaca quem fala. Conteúdo fictício, não clínico-real.",
+      "tempo_alvo_s": 60
+    },
+    {
+      "id": "menu-conduta-1", "bloco": 3, "tipo": "menu",
+      "legenda": "Tornozelo inchado depois de uma torção. Qual a próxima conduta?",
+      "opcoes": [
+        { "tecla": 1, "rotulo": "Pedir ressonância do tornozelo agora", "destino": "cons-m1-rm", "custo": 2, "correta": false, "justificativa": "Exame caro e demorado antes de examinar." },
+        { "tecla": 2, "rotulo": "Examinar o tornozelo e decidir se precisa de imagem", "destino": "resultado-imagem", "custo": 0, "correta": true, "justificativa": "O exame à beira do leito orienta a indicação." },
+        { "tecla": 3, "rotulo": "Dar alta com gelo e repouso, sem examinar", "destino": "cons-m1-alta", "custo": 3, "correta": false, "justificativa": "Uma lesão importante pode passar sem ser vista." }
+      ],
+      "dica": "Antes de pedir qualquer imagem: o que as suas mãos podem descobrir agora?",
+      "notas": "Testar: 1 ou 3 levam à consequência e voltam; após 2 erros aparece a dica do preceptor. Z desfaz cada passo.",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "cons-m1-rm", "bloco": 3, "tipo": "consequencia",
+      "legenda": "A ressonância só tem vaga daqui a três semanas. Até lá, ninguém examinou o pé.",
+      "justificativa": "Exame de alto custo pedido antes da avaliação clínica.",
+      "notas": "Consequência curta (≤ 30 s). → volta ao menu.",
+      "tempo_alvo_s": 20
+    },
+    {
+      "id": "cons-m1-alta", "bloco": 3, "tipo": "consequencia",
+      "legenda": "Dois dias depois, ele volta: não consegue mais apoiar o pé no chão.",
+      "justificativa": "Alta sem exame: atraso e retorno ao serviço.",
+      "notas": "Consequência curta (≤ 30 s). → volta ao menu.",
+      "tempo_alvo_s": 20
+    },
+    {
+      "id": "resultado-imagem", "bloco": 3, "tipo": "resultado",
+      "rotulo": "Resultado", "titulo": "Imagem de teste",
+      "legenda": "Laudo fictício do piloto.\nTrês alvos (A, B e C) marcados na camada de anotação.\nPressione A para ligar e desligar.",
+      "imagens": [{ "manifesto_id": "tst-01", "anotacao": "tst-01-anot" }],
+      "notas": "Testar a tecla A (anotação) e conferir o crédito sob a imagem.",
+      "tempo_alvo_s": 40
+    },
+    {
+      "id": "revelacao", "bloco": 6, "tipo": "revelacao",
+      "titulo": "Revelação",
+      "legenda": "Aqui aparece o diagnóstico pela primeira vez. No piloto: torção sem gravidade (fictício).",
+      "notas": "No painel, a prévia desta cena fica oculta na cena anterior.",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "fechamento-placar", "bloco": 9, "tipo": "fechamento",
+      "itens": [
+        "Mensagem 1 do piloto: examinar antes de pedir imagem.",
+        "Mensagem 2 do piloto: cada exame responde a uma pergunta.",
+        "Mensagem 3 do piloto: o custo da turma mede o caminho, não o acerto final."
+      ],
+      "notas": "Placar: custo da turma × caminho ideal. Referências completas geradas do manifesto.",
+      "tempo_alvo_s": 30
+    }
+  ]
+}

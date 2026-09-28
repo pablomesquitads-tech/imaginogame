@@ -1,0 +1,39 @@
+/* Painel do apresentador (tela do notebook). Lido de perto: tipografia menor que a do palco. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--fundo); color: var(--texto); font-family: var(--f-corpo); font-size: 16px; line-height: 1.4; }
+#painel { height: 100%; display: flex; flex-direction: column; }
+header { display: flex; gap: 12px; padding: 12px; border-bottom: 1px solid var(--borda); align-items: stretch; flex-wrap: wrap; }
+.relogio { background: var(--superficie); border: 1px solid var(--borda); border-radius: 10px; padding: 8px 14px; display: flex; flex-direction: column; min-width: 150px; }
+.relogio .rot { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--texto-sec); }
+.relogio b { font-family: var(--f-mono); font-weight: 500; font-size: 34px; line-height: 1.1; }
+.relogio b.passou { color: var(--errado); }
+.relogio b.estourou { color: var(--fundo); background: var(--errado); border-radius: 6px; padding: 0 6px; }
+.sec { font-size: 12px; color: var(--texto-sec); font-family: var(--f-mono); }
+.conexao { margin-left: auto; align-self: center; font-family: var(--f-mono); font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--borda); color: var(--texto-sec); }
+.conexao.ok { color: var(--certo); border-color: var(--certo); }
+.conexao.falha { color: var(--errado); border-color: var(--errado); }
+main { flex: 1; display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; padding: 12px; min-height: 0; }
+.col { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: auto; padding-right: 4px; }
+h2 { font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-sec); margin-top: 8px; }
+.mono { font-family: var(--f-mono); font-size: 12px; color: var(--texto-sec); letter-spacing: 0; text-transform: none; }
+.ops { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.ops li { display: flex; gap: 10px; background: var(--superficie); border: 1px solid var(--borda); border-radius: 8px; padding: 8px 10px; }
+.ops li.correta { border-color: var(--certo); }
+.ops li.tentada { opacity: .55; }
+.ops em { font-style: normal; font-family: var(--f-mono); font-size: 12px; color: var(--errado); }
+.ops li.correta em { color: var(--certo); }
+.ops small { display: block; color: var(--texto-sec); font-size: 13px; }
+.k { flex: none; font-family: var(--f-mono); font-weight: 500; width: 26px; height: 26px; border-radius: 6px; background: var(--texto); color: var(--fundo); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; }
+.fala { background: var(--superficie); border-radius: 8px; padding: 10px 14px; max-height: 55vh; overflow: auto; }
+.fala p { font-size: 20px; line-height: 1.4; padding: 6px 0; color: var(--texto-sec); }
+.fala p.atual { color: var(--texto); }
+.fala p.lida { opacity: .45; }
+.fala p.vazio { font-size: 14px; }
+.fala .quem { display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--texto-sec); }
+.notas { background: var(--superficie); border-radius: 8px; padding: 10px 14px; font-size: 15px; white-space: pre-line; }
+.proxima .prox { background: var(--superficie); border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; font-size: 14px; display: flex; gap: 8px; align-items: baseline; }
+.teclas { font-size: 13px; border-collapse: collapse; }
+.teclas td { padding: 3px 8px 3px 0; color: var(--texto-sec); }
+.teclas td:first-child { font-family: var(--f-mono); color: var(--texto); white-space: nowrap; }
+.dica-local { margin-top: 12px; font-size: 14px; padding: 8px 12px; border-radius: 8px; background: var(--superficie-2); opacity: 0; transition: opacity .2s; }
+.dica-local.visivel { opacity: 1; }

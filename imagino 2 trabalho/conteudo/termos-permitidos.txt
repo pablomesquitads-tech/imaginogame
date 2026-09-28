@@ -1,0 +1,7 @@
+# Palavras liberadas apesar de começarem com um termo proibido (uma por linha).
+# Só palavra inteira; não aceita trechos.
+vermelho
+vermelha
+vermelhos
+vermelhas
+vermelhidao

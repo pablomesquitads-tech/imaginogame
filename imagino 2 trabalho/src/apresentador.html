@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Apresentador</title>
+<style>
+/*FONTES*/
+/*TOKENS*/
+/*CSS*/
+</style>
+</head>
+<body>
+<div id="painel">
+  <header>
+    <div class="relogio"><span class="rot">Total</span><b id="t-total">0:00</b><span id="t-total-alvo" class="sec"></span></div>
+    <div class="relogio"><span class="rot">Cena</span><b id="t-cena">0:00</b><span id="t-cena-alvo" class="sec"></span></div>
+    <div class="relogio"><span class="rot">Custo</span><b id="custo">0</b><span class="sec" id="custo-ideal"></span></div>
+    <div class="relogio"><span class="rot">Desvios no menu</span><b id="desvios">—</b></div>
+    <div id="conexao" class="conexao">aguardando…</div>
+  </header>
+  <main>
+    <section class="col">
+      <h2>Cena atual <span id="cena-id" class="mono"></span></h2>
+      <div id="opcoes"></div>
+      <h2>Fala a ler</h2>
+      <div id="fala" class="fala"></div>
+      <h2>Notas</h2>
+      <div id="notas" class="notas"></div>
+    </section>
+    <section class="col lateral">
+      <h2>Próxima</h2>
+      <div id="proxima" class="proxima"></div>
+      <h2>Teclas</h2>
+      <table class="teclas">
+        <tr><td>→ / espaço / PgDn</td><td>avançar</td></tr>
+        <tr><td>1–4</td><td>registrar conduta</td></tr>
+        <tr><td>Z</td><td>desfazer</td></tr>
+        <tr><td>A</td><td>anotação da imagem</td></tr>
+        <tr><td>Shift+P</td><td>forçar janela separada</td></tr>
+        <tr><td>R R</td><td>reiniciar (2× em 3 s)</td></tr>
+        <tr><td>F</td><td>tela cheia — só na janela da plateia</td></tr>
+      </table>
+      <div id="dica-local" class="dica-local"></div>
+    </section>
+  </main>
+</div>
+<script>
+/*JS*/
+</script>
+</body>
+</html>

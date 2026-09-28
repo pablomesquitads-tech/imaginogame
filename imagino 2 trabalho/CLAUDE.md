@@ -10,7 +10,7 @@ O Claude Code é a fábrica: motor, conteúdo, processamento de imagens, build e
 
 | Restrição | Valor | Consequência no projeto |
 |---|---|---|
-| Duração nominal | 8 min | Caminho ideal sem desvios cabe em ~8 min |
+| Duração nominal | 8 min | Caminho ideal decidido em ~10 min (seção 10): excede o nominal em ~2 min |
 | Duração máxima com interação | 20 min | Desvios limitados (ver seção 5) + timer no painel do apresentador |
 | Grupos por dia | ~4 | Setup em menos de 1 min: notebook já com a apresentação aberta, só conectar o HDMI |
 | Máquina | Notebook próprio via HDMI | Tela dupla: projetor = plateia; tela do notebook = painel do apresentador |
@@ -95,13 +95,14 @@ O build faz uma checagem automática: busca uma lista de termos proibidos (defin
 
 | Tecla | Ação |
 |---|---|
-| `→` / espaço | Avançar (cenas lineares) |
+| `→` / espaço / `PgDn` / `Enter` | Avançar (cenas lineares; `PgDn` cobre passadores de slide) |
 | `1`–`4` | Registrar a conduta escolhida pela turma |
 | `Z` | Desfazer a última ação (histórico completo) |
 | `P` | Abrir a janela do apresentador (arrastar para a tela do notebook); com uma tela só, alterna um painel sobreposto |
+| `Shift+P` | Forçar a janela separada mesmo com uma tela só (ensaio) |
 | `A` | Ligar/desligar camada de anotação da imagem |
-| `F` | Tela cheia |
-| `R` | Reiniciar o jogo (com confirmação) |
+| `F` | Tela cheia (só na janela da plateia: o navegador exige o gesto nela) |
+| `R` | Reiniciar o jogo (confirmação: `R` de novo em até 3 s) |
 
 ---
 
@@ -157,7 +158,7 @@ Estado do jogo: cena atual, histórico, custo acumulado, número de desvios por 
 | | **Total do caminho ideal** | | **~12:15** |
 | | Folga para desvios até o teto de 20 min | | ~7:45 |
 
-Obs.: o caminho ideal excede os 8 min nominais. **Decisão pendente do usuário:** cortar para ~8 min (ex.: fundir blocos 7 e 8, reduzir para 2 menus) ou assumir que a interação justifica a extensão.
+Obs.: tabela = orçamento original (~12:15). **Decidido (seção 10):** caminho ideal ~10 min, mantendo os 3 menus e enxugando os blocos 7 e 8. Os tempos por cena são reajustados no `roteiro.md`.
 
 ---
 
@@ -186,9 +187,11 @@ seminario/                  (pasta de trabalho — nome livre)
 ├── manifesto.csv
 ├── conteudo/
 │   ├── cenas.json
+│   ├── piloto/cenas.json   # conteúdo fictício do piloto (build --piloto)
 │   ├── roteiro.md          # rascunho do Claude → aprovado pelo usuário
 │   ├── requisitos-imagem.md # o que cada imagem precisa mostrar (guia a busca)
-│   └── termos-proibidos.txt
+│   ├── termos-proibidos.txt
+│   └── termos-permitidos.txt # exceções de palavra inteira (ex.: "vermelho" × "verme")
 ├── assets/
 │   ├── fontes-licencas.md  # termos de uso de cada site, lidos antes de baixar
 │   ├── downloads-manuais.md # URLs para o usuário, se um site proibir download automático
@@ -200,6 +203,7 @@ seminario/                  (pasta de trabalho — nome livre)
 │   └── fontes/             # WOFF2
 ├── src/                    # motor: HTML/CSS/JS sem framework
 ├── build/                  # script de build + checagem de sigilo
+├── tests/                  # testes (Playwright) e revisão visual; saída em tests/saida/
 └── dist/
     └── caso-clinico/       # ENTREGÁVEL: index.html + assets/ (vai para o pendrive)
 ```
@@ -223,13 +227,23 @@ seminario/                  (pasta de trabalho — nome livre)
 
 ---
 
-## 10. Decisões pendentes
+## 10. Decisões
 
-| Decisão | Opções |
+### Tomadas (2026-09-28)
+
+| Decisão | Escolha | Consequência no projeto |
+|---|---|---|
+| Duração-alvo do caminho ideal | **~10 min**, com os **3 menus** mantidos e os **blocos 7–8 enxutos** (no máximo 3 ideias por cena) | `meta.alvo_total_s = 600` e `teto_s = 1200` no `cenas.json`; o painel do apresentador marca o tempo contra 10:00 e 20:00. Excede em ~2 min os 8 min nominais (seção 0) |
+| Paciente | **Ilustração estática com animação CSS**. Vídeo gerado descartado | SVG embutido no HTML no build: respiração, piscar e boca de quem fala; quem não fala fica esmaecido. Regra 1.2 vale: sem sinal clínico desenhado, linha `ilustracao` no manifesto |
+| Título e capa | **"Caso clínico"** (provisório) | `meta.titulo` no `cenas.json` alimenta a capa e o `<title>`; trocar só ali. Passa pela checagem de sigilo |
+
+### Pendentes
+
+| Decisão | Proposta |
 |---|---|
-| Duração-alvo do caminho ideal | ~8 min (cortar) ou ~12 min (manter) |
-| Paciente | Ilustrações estáticas com animação CSS, ou vídeo gerado pelo Gemini |
-| Título e capa neutros | Definidos pelo usuário |
+| Cores `certo` / `errado` (seção 7) | `#5FB38A` / `#D9695F` no piloto; confirmar no projetor real |
+| Painel sobreposto (uma tela só) mostra a opção correta e as notas | Aceitável só se ninguém usar uma tela; com o projetor espelhado, o painel vaza a resposta. Alternativa: esconder a marca de correta no modo sobreposto |
+| `roteiro.md` (D3) ainda propõe outro título | Alinhar D3 a "Caso clínico" na aprovação do roteiro |
 
 ---
 

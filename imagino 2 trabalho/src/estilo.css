@@ -1,0 +1,122 @@
+/* Janela da plateia. Palco fixo 1920×1080, escalonado com letterbox pelo motor. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+body { font-family: var(--f-corpo); color: var(--texto); -webkit-font-smoothing: antialiased; }
+
+#palco {
+  position: absolute; left: 50%; top: 50%;
+  width: 1920px; height: 1080px;
+  transform-origin: 0 0;
+  background: var(--fundo);
+  overflow: hidden;
+  font-size: 32px; line-height: 1.35;
+}
+
+.cena { position: absolute; inset: 0; padding: 72px 96px; display: flex; flex-direction: column; animation: entra .35s ease-out; }
+@keyframes entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cena, .cena * { animation: none !important; transition: none !important; } }
+
+/* HUD: custo acumulado sempre visível */
+.hud { position: absolute; top: 32px; right: 48px; display: flex; gap: 16px; align-items: center; z-index: 5; }
+.pilula { font-family: var(--f-mono); font-size: 26px; font-weight: 500; padding: 8px 20px; border-radius: 999px; background: var(--superficie); border: 1px solid var(--borda); color: var(--texto-sec); }
+.pilula b { color: var(--texto); font-weight: 500; }
+.pilula.piloto { color: var(--fundo); background: var(--texto-sec); border: none; }
+.pilula.pulso { animation: pulso .8s ease-out; }
+@keyframes pulso { 0% { background: var(--errado); color: var(--fundo); } 100% { background: var(--superficie); } }
+
+.rotulo { font-family: var(--f-mono); font-size: 24px; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-sec); margin-bottom: 20px; }
+
+/* ---------- capa e expositiva ---------- */
+.capa { justify-content: center; align-items: flex-start; padding-left: 160px; }
+.capa h1 { font-size: 140px; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+.capa .sub { margin-top: 36px; font-size: 40px; color: var(--texto-sec); }
+.capa .linha { width: 160px; height: 6px; background: var(--texto); margin-bottom: 48px; }
+
+.expositiva { justify-content: center; padding: 96px 200px; }
+.expositiva h2 { font-size: 72px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 40px; }
+.expositiva p { font-size: 40px; max-width: 1400px; color: var(--texto); }
+.itens { list-style: none; counter-reset: i; display: flex; flex-direction: column; gap: 28px; margin-top: 16px; }
+.itens li { counter-increment: i; display: flex; gap: 28px; align-items: baseline; font-size: 44px; }
+.itens li::before { content: counter(i); font-family: var(--f-mono); font-weight: 500; font-size: 32px; color: var(--fundo); background: var(--texto); min-width: 56px; height: 56px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; transform: translateY(-4px); }
+
+/* ---------- fala do paciente ---------- */
+.fala { padding: 0; }
+.fala .ilustracao { flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; background: #12151A; }
+.fala .ilustracao svg { height: 100%; width: auto; max-width: 100%; }
+.fala .ilustracao img { height: 100%; width: auto; animation: respira 4.5s ease-in-out infinite; transform-origin: 50% 100%; }
+.legenda { background: var(--superficie); border-top: 1px solid var(--borda); padding: 36px 160px 48px; min-height: 290px; display: flex; flex-direction: column; justify-content: center; }
+.legenda .quem { font-family: var(--f-mono); font-size: 26px; letter-spacing: .1em; text-transform: uppercase; color: var(--texto-sec); margin-bottom: 12px; }
+.legenda .texto { font-size: 44px; line-height: 1.32; max-width: 1560px; }
+.legenda .texto.entra { animation: entra .3s ease-out; }
+.legenda .passos { display: flex; gap: 10px; margin-top: 24px; }
+.legenda .passos i { width: 36px; height: 6px; border-radius: 3px; background: var(--borda); }
+.legenda .passos i.feito { background: var(--texto-sec); }
+.legenda .passos i.atual { background: var(--texto); }
+
+/* personagens (SVG embutido): respiração, piscar, boca de quem fala */
+.personagem { transition: opacity .4s ease, filter .4s ease; }
+.personagem.calado { opacity: .5; filter: saturate(.6); }
+.personagem .tronco { transform-box: fill-box; transform-origin: 50% 100%; animation: respira 4.5s ease-in-out infinite; }
+.personagem[data-quem="A"] .tronco { animation-duration: 5.2s; animation-delay: -1.3s; }
+.personagem .olhos { transform-box: fill-box; transform-origin: 50% 50%; animation: pisca 5.5s infinite; }
+.personagem[data-quem="A"] .olhos { animation-duration: 6.3s; animation-delay: -2s; }
+.personagem.falando .boca { transform-box: fill-box; transform-origin: 50% 0; animation: fala .32s ease-in-out infinite alternate; }
+@keyframes respira { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.012); } }
+@keyframes pisca { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes fala { from { transform: scaleY(.6); } to { transform: scaleY(1.9); } }
+
+/* ---------- menu ---------- */
+.menu { padding-top: 96px; }
+.menu .pergunta { font-size: 56px; font-weight: 600; letter-spacing: -.01em; max-width: 1500px; margin-bottom: 56px; line-height: 1.2; }
+.opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.opcao { display: flex; gap: 28px; align-items: center; background: var(--superficie); border: 2px solid var(--borda); border-radius: 20px; padding: 32px 36px; min-height: 180px; transition: opacity .3s, border-color .3s; }
+.opcao .tecla { flex: none; font-family: var(--f-mono); font-weight: 500; font-size: 44px; width: 84px; height: 84px; border-radius: 16px; background: var(--texto); color: var(--fundo); display: flex; align-items: center; justify-content: center; }
+.opcao .rot { font-size: 36px; line-height: 1.25; }
+.opcao.tentada { opacity: .5; border-style: dashed; }
+.opcao.tentada .tecla { background: var(--superficie-2); color: var(--texto-sec); }
+.opcao .marca { display: block; font-family: var(--f-mono); font-size: 24px; color: var(--errado); margin-top: 8px; }
+.dica { margin-top: 36px; display: flex; gap: 24px; align-items: flex-start; padding: 28px 36px; border-left: 6px solid var(--texto-sec); background: var(--superficie); border-radius: 0 16px 16px 0; animation: entra .4s ease-out; }
+.dica .quem { font-family: var(--f-mono); font-size: 24px; text-transform: uppercase; letter-spacing: .1em; color: var(--texto-sec); padding-top: 6px; white-space: nowrap; }
+.dica .texto { font-size: 34px; font-style: italic; }
+
+/* ---------- resultado / revelação com imagem ---------- */
+.resultado { flex-direction: row; gap: 72px; padding: 72px 96px 56px; align-items: stretch; }
+.resultado .imagem { flex: none; width: 936px; display: flex; flex-direction: column; }
+.quadro { position: relative; width: 936px; height: 880px; background: #000; border-radius: 8px; overflow: hidden; }
+.quadro img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.quadro img.anot { opacity: 0; transition: opacity .45s ease; }
+.quadro.anotado img.anot { opacity: 1; }
+.credito { font-family: var(--f-mono); font-size: 22px; color: var(--texto-sec); margin-top: 14px; }
+.resultado .texto { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-top: 40px; }
+.resultado h2 { font-size: 56px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 32px; }
+.laudo { font-size: 34px; line-height: 1.45; white-space: pre-line; }
+.estado-anot { margin-top: 40px; font-family: var(--f-mono); font-size: 24px; color: var(--texto-sec); display: flex; align-items: center; gap: 14px; }
+.estado-anot i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--texto-sec); }
+.estado-anot.ligada { color: var(--acento); }
+.estado-anot.ligada i { border-color: var(--acento); background: var(--acento); }
+
+/* ---------- consequência ---------- */
+.consequencia { justify-content: center; align-items: center; background: radial-gradient(ellipse at 50% 40%, #1a1214 0%, var(--fundo) 70%); }
+.consequencia .cartao { max-width: 1400px; text-align: left; }
+.consequencia .custo { font-family: var(--f-mono); font-size: 96px; font-weight: 500; color: var(--errado); line-height: 1; margin-bottom: 40px; }
+.consequencia .custo small { font-size: 32px; color: var(--texto-sec); margin-left: 16px; }
+.consequencia .texto { font-size: 48px; line-height: 1.3; margin-bottom: 36px; }
+.consequencia .just { font-size: 32px; color: var(--texto-sec); padding-top: 28px; border-top: 1px solid var(--borda); }
+.volta { position: absolute; bottom: 48px; right: 72px; font-family: var(--f-mono); font-size: 24px; color: var(--texto-sec); }
+
+/* ---------- fechamento ---------- */
+.fechamento { justify-content: center; padding: 72px 160px; }
+.placar { display: flex; gap: 96px; align-items: flex-end; margin: 24px 0 56px; }
+.placar .num { font-family: var(--f-mono); font-size: 180px; font-weight: 500; line-height: .9; }
+.placar .num.ideal { color: var(--texto-sec); }
+.placar .leg { font-size: 30px; color: var(--texto-sec); margin-top: 16px; }
+.placar .vs { font-size: 48px; color: var(--texto-sec); padding-bottom: 60px; }
+.fechamento .msg { font-size: 36px; margin-bottom: 12px; }
+.referencias { margin-top: 40px; font-family: var(--f-mono); font-size: 20px; color: var(--texto-sec); line-height: 1.5; }
+
+/* ---------- avisos (reiniciar, sem cenas) ---------- */
+#aviso { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); padding: 12px 24px; border-radius: 10px; background: var(--superficie); border: 1px solid var(--borda); font-size: 18px; color: var(--texto); opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 20; }
+#aviso.visivel { opacity: 1; }
+
+/* painel sobreposto (uma tela só) */
+#sobreposto { position: fixed; right: 12px; bottom: 12px; width: min(46vw, 900px); height: min(70vh, 640px); border: 1px solid var(--borda); border-radius: 12px; background: var(--fundo); z-index: 30; box-shadow: 0 12px 48px rgba(0,0,0,.6); }
