@@ -1,3 +1,4 @@
 node_modules/
 tests/saida/
 dist/rascunho/
+*.zip
