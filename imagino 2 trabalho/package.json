@@ -4,12 +4,17 @@
   "type": "module",
   "description": "Seminário de Imaginologia — jogo de atendimento em HTML offline",
   "scripts": {
+    "roteiro": "node build/roteiro-para-cenas.mjs",
     "build": "node build/build.mjs",
+    "build:rascunho": "node build/roteiro-para-cenas.mjs && node build/build.mjs --rascunho",
     "build:piloto": "node build/build.mjs --piloto",
+    "processar": "node build/processar.mjs",
     "teste:imagens": "node build/gerar-teste-piloto.mjs",
     "teste:sigilo": "node tests/testar-sigilo.mjs",
     "teste:piloto": "node build/build.mjs --piloto && node tests/testar-piloto.mjs",
-    "revisao": "node tests/revisao-visual.mjs"
+    "test": "node tests/testar-sigilo.mjs && node build/build.mjs --piloto && node tests/testar-piloto.mjs",
+    "revisao": "node tests/revisao-visual.mjs",
+    "pdf": "node tests/pdf-contingencia.mjs"
   },
   "devDependencies": {
     "playwright": "1.56.1"

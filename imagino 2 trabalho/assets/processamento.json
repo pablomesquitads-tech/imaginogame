@@ -1,0 +1,17 @@
+{
+  "_leia": "Fase 3. Cole aqui o JSON gerado por ferramentas/anotador.html (um item por id do manifesto) e rode: node build/processar.mjs. Coordenadas em pixels da imagem ORIGINAL. Chaves começando com _ são ignoradas.",
+  "_exemplo-imagem": {
+    "original": "assets/originais/<arquivo baixado>",
+    "recorte": [0, 0, 512, 512],
+    "cobrir": [[10, 480, 200, 24]],
+    "largura": 1024,
+    "anotacoes": [{ "tipo": "circulo", "x": 250, "y": 240, "r": 30 }, { "tipo": "seta", "x1": 400, "y1": 80, "x2": 280, "y2": 210 }]
+  },
+  "_exemplo-pilha": {
+    "tipo": "pilha",
+    "originais": "assets/originais/<pasta com os cortes em ordem>",
+    "recorte": [0, 0, 512, 512],
+    "largura": 768,
+    "fps": 8
+  }
+}

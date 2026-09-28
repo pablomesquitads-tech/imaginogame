@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anotador</title>
+<style>
+  :root { --fundo:#0B0D10; --superficie:#15181D; --borda:#2A2F37; --texto:#E8E6E1; --texto-sec:#9AA0A8; --acento:#F2A900; --errado:#D9695F; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--fundo); color: var(--texto); font: 14px/1.45 system-ui, sans-serif; display: grid; grid-template-columns: 1fr 380px; height: 100vh; }
+  main { position: relative; overflow: auto; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  #vazio { color: var(--texto-sec); text-align: center; border: 2px dashed var(--borda); border-radius: 12px; padding: 48px; }
+  canvas { display: none; max-width: 100%; max-height: calc(100vh - 32px); cursor: crosshair; }
+  aside { background: var(--superficie); border-left: 1px solid var(--borda); padding: 16px; overflow: auto; display: flex; flex-direction: column; gap: 14px; }
+  h1 { font-size: 16px; }
+  h2 { font: 500 11px ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--texto-sec); }
+  label { display: flex; flex-direction: column; gap: 4px; color: var(--texto-sec); font-size: 12px; }
+  input[type=text], input[type=number], textarea { width: 100%; min-width: 0; background: var(--fundo); color: var(--texto); border: 1px solid var(--borda); border-radius: 6px; padding: 6px 8px; font: 13px ui-monospace, monospace; }
+  textarea { height: 220px; resize: vertical; }
+  .modos { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  button { background: var(--fundo); color: var(--texto); border: 1px solid var(--borda); border-radius: 6px; padding: 8px; cursor: pointer; font: inherit; }
+  button.ativo { border-color: var(--acento); color: var(--acento); }
+  ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; font: 12px ui-monospace, monospace; }
+  li { display: flex; justify-content: space-between; background: var(--fundo); padding: 4px 8px; border-radius: 4px; }
+  li button { padding: 0 6px; border: none; color: var(--errado); }
+  .ajuda { color: var(--texto-sec); font-size: 12px; }
+  .linha { display: flex; gap: 8px; }
+  .linha > * { flex: 1; }
+</style>
+</head>
+<body>
+<main>
+  <div id="vazio">Arraste aqui a imagem original (de <code>assets/originais/</code>)<br>ou use o botão “Abrir imagem”.</div>
+  <canvas id="tela"></canvas>
+</main>
+<aside>
+  <h1>Anotador · processamento de imagem</h1>
+  <p class="ajuda">As marcas ficam em pixels da imagem original. O achado a marcar vem da descrição do caso na fonte; esta ferramenta só registra onde você o apontou.</p>
+  <label><input type="file" id="arquivo" accept="image/*" hidden><button id="abrir">Abrir imagem</button></label>
+  <div class="linha">
+    <label>id neutro <input type="text" id="id" value="img-01"></label>
+    <label>largura final (px) <input type="number" id="largura" value="1024" min="256" step="64"></label>
+  </div>
+  <label>pasta de origem, se for pilha (senão, vazio) <input type="text" id="pilha" placeholder="assets/originais/pilha-01"></label>
+  <h2>Ferramenta</h2>
+  <div class="modos">
+    <button data-modo="recorte" class="ativo">Recorte (1)</button>
+    <button data-modo="cobrir">Cobrir texto</button>
+    <button data-modo="circulo">Círculo</button>
+    <button data-modo="seta">Seta</button>
+  </div>
+  <p class="ajuda">Arraste sobre a imagem. Recorte e Cobrir: retângulo. Círculo: do centro para fora. Seta: da cauda para a ponta. Ctrl+Z desfaz.</p>
+  <h2>Marcas</h2>
+  <ul id="lista"></ul>
+  <h2>JSON para assets/processamento.json</h2>
+  <textarea id="saida" readonly></textarea>
+  <button id="copiar">Copiar JSON</button>
+</aside>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const tela = $('tela'), ctx = tela.getContext('2d');
+  let img = null, nomeArquivo = '', modo = 'recorte', arrasto = null;
+  let recorte = null; const cobrir = [], anotacoes = [], pilha = [];
+  const r = Math.round;
+
+  function carregar(file) {
+    const leitor = new FileReader();
+    leitor.onload = () => {
+      const i = new Image();
+      i.onload = () => { img = i; nomeArquivo = file.name; tela.width = i.naturalWidth; tela.height = i.naturalHeight; tela.style.display = 'block'; $('vazio').style.display = 'none'; desenhar(); };
+      i.src = leitor.result;
+    };
+    leitor.readAsDataURL(file);
+  }
+  $('abrir').onclick = () => $('arquivo').click();
+  $('arquivo').onchange = (e) => e.target.files[0] && carregar(e.target.files[0]);
+  document.body.ondragover = (e) => e.preventDefault();
+  document.body.ondrop = (e) => { e.preventDefault(); e.dataTransfer.files[0] && carregar(e.dataTransfer.files[0]); };
+
+  document.querySelectorAll('[data-modo]').forEach((b) => b.onclick = () => {
+    modo = b.dataset.modo;
+    document.querySelectorAll('[data-modo]').forEach((x) => x.classList.toggle('ativo', x === b));
+  });
+
+  const ponto = (e) => { const b = tela.getBoundingClientRect(); return [(e.clientX - b.left) * tela.width / b.width, (e.clientY - b.top) * tela.height / b.height]; };
+  const ret = ([x1, y1], [x2, y2]) => [r(Math.min(x1, x2)), r(Math.min(y1, y2)), r(Math.abs(x2 - x1)), r(Math.abs(y2 - y1))];
+
+  function forma(a, b) {
+    if (modo === 'recorte' || modo === 'cobrir') return { modo, rect: ret(a, b) };
+    if (modo === 'circulo') return { modo, tipo: 'circulo', x: r(a[0]), y: r(a[1]), r: r(Math.hypot(b[0] - a[0], b[1] - a[1])) };
+    return { modo, tipo: 'seta', x1: r(a[0]), y1: r(a[1]), x2: r(b[0]), y2: r(b[1]) };
+  }
+  tela.onpointerdown = (e) => { arrasto = { a: ponto(e), b: ponto(e) }; tela.setPointerCapture(e.pointerId); };
+  tela.onpointermove = (e) => { if (arrasto) { arrasto.b = ponto(e); desenhar(); } };
+  tela.onpointerup = () => {
+    if (!arrasto) return;
+    const f = forma(arrasto.a, arrasto.b); arrasto = null;
+    const pequeno = f.rect ? f.rect[2] < 4 || f.rect[3] < 4 : f.tipo === 'circulo' ? f.r < 4 : Math.hypot(f.x2 - f.x1, f.y2 - f.y1) < 8;
+    if (!pequeno) {
+      if (f.modo === 'recorte') recorte = f.rect;
+      else if (f.modo === 'cobrir') cobrir.push(f.rect);
+      else anotacoes.push(f);
+      pilha.push(f.modo);
+    }
+    desenhar();
+  };
+  document.onkeydown = (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      const m = pilha.pop();
+      if (m === 'recorte') recorte = null; else if (m === 'cobrir') cobrir.pop(); else if (m) anotacoes.pop();
+      desenhar();
+    }
+  };
+
+  function desenharForma(f, preview) {
+    const esp = Math.max(2, tela.width / 300);
+    ctx.lineWidth = esp;
+    if (f.rect) {
+      const [x, y, w, h] = f.rect;
+      if (f.modo === 'cobrir') { ctx.fillStyle = preview ? 'rgba(0,0,0,.6)' : '#000'; ctx.fillRect(x, y, w, h); ctx.strokeStyle = '#D9695F'; ctx.setLineDash([esp * 3, esp * 2]); ctx.strokeRect(x, y, w, h); }
+      else { ctx.strokeStyle = '#fff'; ctx.setLineDash([esp * 4, esp * 3]); ctx.strokeRect(x, y, w, h); }
+      ctx.setLineDash([]);
+      return;
+    }
+    ctx.strokeStyle = ctx.fillStyle = '#F2A900';
+    if (f.tipo === 'circulo') { ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.stroke(); return; }
+    const ang = Math.atan2(f.y2 - f.y1, f.x2 - f.x1), L = esp * 5;
+    ctx.beginPath(); ctx.moveTo(f.x1, f.y1); ctx.lineTo(f.x2, f.y2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(f.x2, f.y2);
+    ctx.lineTo(f.x2 - L * Math.cos(ang + .45), f.y2 - L * Math.sin(ang + .45));
+    ctx.lineTo(f.x2 - L * Math.cos(ang - .45), f.y2 - L * Math.sin(ang - .45)); ctx.fill();
+  }
+
+  function desenhar() {
+    if (!img) return;
+    ctx.drawImage(img, 0, 0);
+    if (recorte) { // escurece o que fica fora do recorte
+      const [x, y, w, h] = recorte;
+      ctx.fillStyle = 'rgba(0,0,0,.55)';
+      ctx.fillRect(0, 0, tela.width, y); ctx.fillRect(0, y + h, tela.width, tela.height - y - h);
+      ctx.fillRect(0, y, x, h); ctx.fillRect(x + w, y, tela.width - x - w, h);
+      desenharForma({ modo: 'recorte', rect: recorte });
+    }
+    cobrir.forEach((c) => desenharForma({ modo: 'cobrir', rect: c }));
+    anotacoes.forEach((a) => desenharForma(a));
+    if (arrasto) desenharForma(forma(arrasto.a, arrasto.b), true);
+    listar(); gerar();
+  }
+
+  function listar() {
+    const itens = [];
+    if (recorte) itens.push(['recorte ' + recorte.join(','), () => { recorte = null; }]);
+    cobrir.forEach((c, i) => itens.push(['cobrir ' + c.join(','), () => cobrir.splice(i, 1)]));
+    anotacoes.forEach((a, i) => itens.push([a.tipo === 'circulo' ? `círculo ${a.x},${a.y} r${a.r}` : `seta ${a.x1},${a.y1}→${a.x2},${a.y2}`, () => anotacoes.splice(i, 1)]));
+    $('lista').innerHTML = '';
+    itens.forEach(([t, apagar]) => {
+      const li = document.createElement('li'); li.textContent = t;
+      const b = document.createElement('button'); b.textContent = '×'; b.title = 'apagar';
+      b.onclick = () => { apagar(); desenhar(); }; li.appendChild(b); $('lista').appendChild(li);
+    });
+  }
+
+  function gerar() {
+    const id = $('id').value.trim(), pasta = $('pilha').value.trim();
+    const item = pasta ? { tipo: 'pilha', originais: pasta } : { original: `assets/originais/${nomeArquivo}` };
+    if (recorte) item.recorte = recorte;
+    if (cobrir.length) item.cobrir = cobrir;
+    item.largura = Number($('largura').value) || 1024;
+    if (!pasta && anotacoes.length) item.anotacoes = anotacoes.map(({ modo, ...a }) => a);
+    if (pasta) item.fps = 8;
+    $('saida').value = JSON.stringify({ [id]: item }, null, 2).split('\n').slice(1, -1).join('\n') + ',';
+  }
+  ['id', 'largura', 'pilha'].forEach((k) => $(k).oninput = gerar);
+  $('copiar').onclick = async () => {
+    try { await navigator.clipboard.writeText($('saida').value); $('copiar').textContent = 'Copiado'; }
+    catch (_) { $('saida').select(); document.execCommand('copy'); $('copiar').textContent = 'Copiado (seleção)'; }
+    setTimeout(() => $('copiar').textContent = 'Copiar JSON', 1500);
+  };
+})();
+</script>
+</body>
+</html>

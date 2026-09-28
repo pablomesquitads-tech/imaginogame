@@ -80,20 +80,45 @@ body { font-family: var(--f-corpo); color: var(--texto); -webkit-font-smoothing:
 .dica .texto { font-size: 34px; font-style: italic; }
 
 /* ---------- resultado / revelação com imagem ---------- */
-.resultado { flex-direction: row; gap: 72px; padding: 72px 96px 56px; align-items: stretch; }
-.resultado .imagem { flex: none; width: 936px; display: flex; flex-direction: column; }
-.quadro { position: relative; width: 936px; height: 880px; background: #000; border-radius: 8px; overflow: hidden; }
-.quadro img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.figura { margin: 0; display: flex; flex-direction: column; }
+.figura figcaption { font-family: var(--f-mono); font-size: 24px; color: var(--texto-sec); margin-top: 10px; letter-spacing: .04em; }
+.quadro { position: relative; width: 936px; height: 840px; background: #000; border-radius: 8px; overflow: hidden; }
+.quadro img, .quadro video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .quadro img.anot { opacity: 0; transition: opacity .45s ease; }
 .quadro.anotado img.anot { opacity: 1; }
-.credito { font-family: var(--f-mono); font-size: 22px; color: var(--texto-sec); margin-top: 14px; }
+.quadro.fora-da-chave img.anot { opacity: 0; transition: none; }
+.quadro .corte { position: absolute; right: 14px; bottom: 12px; font-family: var(--f-mono); font-size: 22px; color: var(--texto); background: rgba(0,0,0,.65); padding: 4px 12px; border-radius: 6px; }
+.quadro.pendente { display: flex; align-items: center; justify-content: center; text-align: center; background: var(--superficie); border: 2px dashed var(--borda); padding: 40px; }
+.quadro.pendente b { display: block; font-family: var(--f-mono); font-weight: 500; font-size: 30px; letter-spacing: .1em; color: var(--texto-sec); margin-bottom: 12px; }
+.quadro.pendente span { font-size: 24px; color: var(--texto-sec); }
+.credito { font-family: var(--f-mono); font-size: 22px; color: var(--texto-sec); margin-top: 12px; }
+
+.resultado { flex-direction: row; gap: 72px; padding: 72px 96px 48px; align-items: stretch; }
+.resultado .imagem { flex: none; width: 936px; display: flex; flex-direction: column; }
 .resultado .texto { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-top: 40px; }
-.resultado h2 { font-size: 56px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 32px; }
-.laudo { font-size: 34px; line-height: 1.45; white-space: pre-line; }
-.estado-anot { margin-top: 40px; font-family: var(--f-mono); font-size: 24px; color: var(--texto-sec); display: flex; align-items: center; gap: 14px; }
+.resultado h2, .resultado-multi h2, .laudo-so h2 { font-size: 56px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 28px; }
+.laudo { font-size: 34px; line-height: 1.45; white-space: pre-line; margin-bottom: 24px; }
+.estado-anot { margin-top: 16px; font-family: var(--f-mono); font-size: 24px; color: var(--texto-sec); display: flex; align-items: center; gap: 14px; }
 .estado-anot i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--texto-sec); }
 .estado-anot.ligada { color: var(--acento); }
 .estado-anot.ligada i { border-color: var(--acento); background: var(--acento); }
+
+/* duas ou mais imagens: imagens em linha, laudo embaixo */
+.resultado-multi { padding: 56px 96px 36px; }
+.linha-imagens { display: flex; gap: 32px; justify-content: center; }
+.linha-imagens.n2 .quadro { width: 780px; height: 560px; }
+.linha-imagens.n3 .quadro { width: 540px; height: 500px; }
+.linha-imagens.n4 .quadro { width: 400px; height: 400px; }
+.resultado-multi .credito { text-align: center; }
+.resultado-multi .texto { margin-top: 20px; }
+.resultado-multi .laudo { font-size: 30px; margin-bottom: 10px; }
+.resultado-multi .rotulo { margin-bottom: 6px; }
+.linha-imagens.mini { margin-top: 40px; justify-content: flex-start; }
+.linha-imagens.mini .quadro { width: 360px; height: 300px; }
+
+/* laudo sem imagem (ex.: anamnese e exame físico) */
+.laudo-so { justify-content: center; padding: 96px 200px; }
+.laudo-so .laudo { font-size: 36px; max-width: 1500px; margin-bottom: 36px; }
 
 /* ---------- consequência ---------- */
 .consequencia { justify-content: center; align-items: center; background: radial-gradient(ellipse at 50% 40%, #1a1214 0%, var(--fundo) 70%); }
@@ -112,6 +137,11 @@ body { font-family: var(--f-corpo); color: var(--texto); -webkit-font-smoothing:
 .placar .leg { font-size: 30px; color: var(--texto-sec); margin-top: 16px; }
 .placar .vs { font-size: 48px; color: var(--texto-sec); padding-bottom: 60px; }
 .fechamento .msg { font-size: 36px; margin-bottom: 12px; }
+.placar .tempo { margin-left: 48px; }
+.placar .tempo .num { font-size: 110px; }
+.referencias-cena { justify-content: center; padding: 72px 160px; }
+.referencias-cena h2 { font-size: 56px; font-weight: 700; margin-bottom: 32px; }
+.refs { font-size: 28px; line-height: 1.45; display: flex; flex-direction: column; gap: 14px; padding-left: 32px; margin-bottom: 32px; color: var(--texto); }
 .referencias { margin-top: 40px; font-family: var(--f-mono); font-size: 20px; color: var(--texto-sec); line-height: 1.5; }
 
 /* ---------- avisos (reiniciar, sem cenas) ---------- */

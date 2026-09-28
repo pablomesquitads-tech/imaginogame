@@ -101,6 +101,7 @@ O build faz uma checagem automática: busca uma lista de termos proibidos (defin
 | `P` | Abrir a janela do apresentador (arrastar para a tela do notebook); com uma tela só, alterna um painel sobreposto |
 | `Shift+P` | Forçar a janela separada mesmo com uma tela só (ensaio) |
 | `A` | Ligar/desligar camada de anotação da imagem |
+| `↑` / `↓` | Percorrer os cortes de uma pilha (a anotação só aparece no corte-chave; não entra no histórico) |
 | `F` | Tela cheia (só na janela da plateia: o navegador exige o gesto nela) |
 | `R` | Reiniciar o jogo (confirmação: `R` de novo em até 3 s) |
 
@@ -129,6 +130,17 @@ Todo o conteúdo fica em `conteudo/cenas.json`, separado do motor. Esquema de um
 ```
 
 Estado do jogo: cena atual, histórico, custo acumulado, número de desvios por menu, tempo decorrido.
+
+**Implementação.** O `cenas.json` é **gerado** de `roteiro.md` por `build/roteiro-para-cenas.mjs` (não editar à mão). Mídias, nomes dos personagens e meta ficam em `conteudo/config-roteiro.json`. Campos usados pelo motor além do esquema acima:
+
+| Campo | Onde | Uso |
+|---|---|---|
+| `meta.titulo`, `alvo_total_s`, `teto_s` | raiz | Capa, `<title>`, cronômetros do painel |
+| `legendas[{quem, texto}]`, `personagens`, `ilustracao` | `fala` | Legenda trecho a trecho; quem fala mexe a boca |
+| `dica` | `menu` | Dica do preceptor após 2 erros (vem da cena `dica-mN` do roteiro) |
+| `titulo`, `itens`, `secoes[{titulo, texto}]`, `layout` | vários | Expositivas numeradas, laudos por seção, capa, fechamento (`mensagens`, placar, `referencias`) |
+| `imagens[{manifesto_id, anotacao, pilha, corte_chave, video, rotulo}]` | `resultado`, `revelacao`, `expositiva` | 1 imagem: imagem + laudo lado a lado; 2+: imagens em linha e laudo embaixo |
+| `proxima` | cenas lineares | Opcional; o padrão é a próxima cena que não seja consequência |
 
 ---
 
@@ -186,7 +198,8 @@ seminario/                  (pasta de trabalho — nome livre)
 ├── CLAUDE.md
 ├── manifesto.csv
 ├── conteudo/
-│   ├── cenas.json
+│   ├── cenas.json          # GERADO de roteiro.md (npm run roteiro)
+│   ├── config-roteiro.json # mídias por cena, personagens, meta
 │   ├── piloto/cenas.json   # conteúdo fictício do piloto (build --piloto)
 │   ├── roteiro.md          # rascunho do Claude → aprovado pelo usuário
 │   ├── requisitos-imagem.md # o que cada imagem precisa mostrar (guia a busca)
@@ -200,12 +213,17 @@ seminario/                  (pasta de trabalho — nome livre)
 │   ├── processadas/        # renomeadas, recortadas, WebP; pares limpo/anotado
 │   ├── pilhas/             # frames de cortes sequenciais
 │   ├── paciente/           # ilustrações/vídeos do personagem
+│   ├── processamento.json  # recorte/cobrir/anotações por id (gerado com ferramentas/anotador.html)
 │   └── fontes/             # WOFF2
+├── ferramentas/anotador.html # marca recorte, texto a cobrir, círculos e setas (offline)
 ├── src/                    # motor: HTML/CSS/JS sem framework
 ├── build/                  # script de build + checagem de sigilo
 ├── tests/                  # testes (Playwright) e revisão visual; saída em tests/saida/
+├── STATUS.md · CHECKLIST-DIA.md · COMO-TESTAR-PILOTO.md
 └── dist/
-    └── caso-clinico/       # ENTREGÁVEL: index.html + assets/ (vai para o pendrive)
+    ├── caso-clinico/       # ENTREGÁVEL: index.html + assets/ (vai para o pendrive)
+    ├── contingencia/       # PDF do caminho ideal (fase 7)
+    └── rascunho/           # build --rascunho (não versionado, nunca vai para o pendrive)
 ```
 
 ---
@@ -244,6 +262,8 @@ seminario/                  (pasta de trabalho — nome livre)
 | Cores `certo` / `errado` (seção 7) | `#5FB38A` / `#D9695F` no piloto; confirmar no projetor real |
 | Painel sobreposto (uma tela só) mostra a opção correta e as notas | Aceitável só se ninguém usar uma tela; com o projetor espelhado, o painel vaza a resposta. Alternativa: esconder a marca de correta no modo sobreposto |
 | `roteiro.md` (D3) ainda propõe outro título | Alinhar D3 a "Caso clínico" na aprovação do roteiro |
+| Rede da sessão de nuvem bloqueia radiopaedia.org | Liberar `radiopaedia.org` e `*.radiopaedia.org` no ambiente, ou rodar a fase 2b no Claude Code local |
+| Ordem das opções nos menus | A correta é 3, 3 e 4 nos menus 1–3; o roteiro sugere embaralhar. Trocar as teclas no próprio `roteiro.md` |
 
 ---
 

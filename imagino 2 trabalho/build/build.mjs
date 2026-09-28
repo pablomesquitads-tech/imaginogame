@@ -1,6 +1,9 @@
-// Build do jogo: node build/build.mjs [--piloto]
-// Lê conteudo/cenas.json (ou conteudo/piloto/cenas.json), valida contra o manifesto,
-// roda a checagem de sigilo e gera dist/caso-clinico/ (index.html autocontido + assets/).
+// Build do jogo: node build/build.mjs [--piloto | --rascunho]
+//   (sem opção)  entregável: exige roteiro APROVADO e imagens aprovadas → dist/caso-clinico/
+//   --piloto     conteúdo fictício de conteudo/piloto/ → dist/caso-clinico/ (selo PILOTO)
+//   --rascunho   conteúdo real ainda não aprovado; imagens que faltam viram "IMAGEM PENDENTE"
+//                → dist/rascunho/caso-clinico/ (selo RASCUNHO; fora do entregável, não versionado)
+// Em todos os modos: validação contra o manifesto e checagem de sigilo.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,9 +11,11 @@ import { lerCsv } from './csv.mjs';
 import { lerLista, criarVerificador, checarCenas, normalizar } from './sigilo.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PILOTO = process.argv.includes('--piloto');
+const MODO = process.argv.includes('--piloto') ? 'piloto' : process.argv.includes('--rascunho') ? 'rascunho' : 'final';
+const PILOTO = MODO === 'piloto';
+const FINAL = MODO === 'final';
 const DIR_CONTEUDO = path.join(RAIZ, 'conteudo', PILOTO ? 'piloto' : '');
-const DIST = path.join(RAIZ, 'dist', 'caso-clinico');
+const DIST = path.join(RAIZ, 'dist', MODO === 'rascunho' ? 'rascunho' : '', 'caso-clinico');
 
 const TIPOS = ['fala', 'menu', 'resultado', 'consequencia', 'expositiva', 'revelacao', 'fechamento'];
 const LINEARES = ['fala', 'resultado', 'expositiva', 'revelacao'];
@@ -22,7 +27,7 @@ const rel = (p) => path.relative(RAIZ, p);
 
 // ---------- entrada ----------
 const bruto = JSON.parse(ler(path.join(DIR_CONTEUDO, 'cenas.json')));
-const meta = { titulo: 'Caso clínico', alvo_total_s: 600, teto_s: 1200, ...bruto.meta, piloto: PILOTO };
+const meta = { titulo: 'Caso clínico', alvo_total_s: 600, teto_s: 1200, ...bruto.meta, selo: FINAL ? null : MODO.toUpperCase() };
 const cenas = bruto.cenas ?? [];
 const manifesto = lerCsv(ler(path.join(RAIZ, 'manifesto.csv')));
 const porId = new Map(manifesto.map((m) => [m.id, m]));
@@ -31,7 +36,7 @@ const permitidos = lerLista(ler(path.join(RAIZ, 'conteudo', 'termos-permitidos.t
 const verificar = criarVerificador(termos, permitidos);
 
 // ---------- portão do roteiro (CLAUDE.md, seção 11) ----------
-if (!PILOTO && cenas.length) {
+if (FINAL && cenas.length) {
   const status = ler(path.join(RAIZ, 'conteudo', 'roteiro.md')).split(/\r?\n/)[0].trim();
   if (status !== 'STATUS: APROVADO') erro(`roteiro.md não está aprovado ("${status}"); conteúdo clínico não entra no build.`);
 }
@@ -56,35 +61,46 @@ cenas.forEach((c, i) => {
       else if (!o.correta && cenas.find((x) => x.id === o.destino).tipo !== 'consequencia') erro(`${c.id}: opção errada ${o.tecla} deve levar a uma cena "consequencia"`);
     }
   }
-  if (LINEARES.includes(c.tipo)) {
+  if (LINEARES.includes(c.tipo) || c.tipo === 'fechamento') {
     if (!c.proxima) c.proxima = cenas.slice(i + 1).find((x) => x.tipo !== 'consequencia')?.id ?? null;
     if (c.proxima && !ids.has(c.proxima)) erro(`${c.id}: proxima inexistente "${c.proxima}"`);
-    if (!c.proxima) erro(`${c.id}: cena linear sem próxima cena`);
+    if (!c.proxima && c.tipo !== 'fechamento') erro(`${c.id}: cena linear sem próxima cena`);
   }
   if (c.tipo === 'fala' && !(c.legendas?.length)) erro(`${c.id}: cena de fala precisa de "legendas"`);
 });
 
 // ---------- imagens × manifesto (CLAUDE.md, seção 1) ----------
-const usadas = new Map(); // manifesto_id -> linha
+const usadas = new Map();    // manifesto_id -> linha
+const pendentes = new Map(); // manifesto_id -> motivo (só no modo rascunho)
+const avisos = [];
+function framesDe(dir) {
+  return fs.existsSync(dir) && fs.statSync(dir).isDirectory() ? fs.readdirSync(dir).filter((f) => f.endsWith('.webp')).sort() : [];
+}
+// Pilha = arquivo_neutro é uma pasta de cortes (tipo "pilha", ou "teste" no piloto).
+const ehPilha = (m) => m.tipo === 'pilha' || (fs.existsSync(path.join(RAIZ, m.arquivo_neutro)) && fs.statSync(path.join(RAIZ, m.arquivo_neutro)).isDirectory());
 function exigirImagem(mid, cena) {
   const m = porId.get(mid);
   if (!m) return erro(`${cena}: "${mid}" não está no manifesto.csv`);
   const arq = path.join(RAIZ, m.arquivo_neutro);
-  if (!fs.existsSync(arq)) erro(`${cena}: arquivo de "${mid}" não existe (${m.arquivo_neutro})`);
+  const falhas = [];
+  if (ehPilha(m) ? !framesDe(arq).length : !fs.existsSync(arq)) falhas.push(`arquivo não existe (${m.arquivo_neutro})`);
   if (/originais|candidatos/.test(m.arquivo_neutro)) erro(`${mid}: arquivo_neutro aponta para originais/candidatos`);
   if (!PILOTO) {
-    if (m.tipo === 'teste') erro(`${mid}: imagem de teste do piloto no build final`);
-    if (['radiologia', 'pilha', 'video'].includes(m.tipo) && (m.licenca_verificada !== 'sim' || m.aprovado_usuario !== 'sim'))
-      erro(`${mid}: licença não verificada ou candidato não aprovado`);
-    if (m.tipo === 'ilustracao' && m.aprovado_usuario !== 'sim') erro(`${mid}: ilustração não aprovada`);
+    if (m.tipo === 'teste') erro(`${mid}: imagem de teste do piloto fora do modo piloto`);
+    if (['radiologia', 'pilha', 'video'].includes(m.tipo) && (m.licenca_verificada !== 'sim' || m.aprovado_usuario !== 'sim')) falhas.push('licença não verificada ou candidato não aprovado');
+    if (m.tipo === 'ilustracao' && m.aprovado_usuario !== 'sim') falhas.push('ilustração não aprovada');
+  }
+  if (falhas.length) {
+    // Rascunho: arquivo ausente vira "IMAGEM PENDENTE"; falta de aprovação só avisa (para revisar o visual).
+    if (MODO === 'rascunho') {
+      if (falhas.some((f) => f.startsWith('arquivo'))) pendentes.set(mid, falhas.join('; '));
+      else avisos.push(`${mid}: ${falhas.join('; ')}`);
+    } else for (const f of falhas) erro(`${cena}: ${mid}: ${f}`);
   }
   usadas.set(mid, m);
 }
 for (const c of cenas) {
-  for (const im of c.imagens ?? []) {
-    exigirImagem(im.manifesto_id, c.id);
-    if (im.anotacao) exigirImagem(im.anotacao, c.id);
-  }
+  for (const im of c.imagens ?? []) for (const k of ['manifesto_id', 'anotacao', 'pilha', 'video']) if (im[k]) exigirImagem(im[k], c.id);
   if (c.ilustracao) exigirImagem(c.ilustracao, c.id);
 }
 
@@ -103,7 +119,7 @@ for (const campo of ['titulo', 'subtitulo']) for (const t of verificar(meta[camp
 const iRev = cenas.findIndex((c) => c.tipo === 'revelacao');
 const cenasAntes = new Set((iRev === -1 ? cenas : cenas.slice(0, iRev)).map((c) => c.id));
 for (const [mid, m] of usadas) {
-  const antes = cenas.some((c) => cenasAntes.has(c.id) && [...(c.imagens ?? []).flatMap((i) => [i.manifesto_id, i.anotacao]), c.ilustracao].includes(mid));
+  const antes = cenas.some((c) => cenasAntes.has(c.id) && [...(c.imagens ?? []).flatMap((i) => [i.manifesto_id, i.anotacao, i.pilha, i.video]), c.ilustracao].includes(mid));
   if (antes) for (const t of verificar(credito(m))) sigilo.push({ cena: mid, campo: 'credito', termo: t, trecho: credito(m) });
   for (const t of verificar(path.basename(m.arquivo_neutro))) sigilo.push({ cena: mid, campo: 'arquivo', termo: t, trecho: m.arquivo_neutro });
 }
@@ -119,13 +135,29 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(path.join(DIST, 'assets'), { recursive: true });
 
 const midia = {};
+const neutro = (nome) => /^[a-z0-9-]+(\.(webp|png|jpg|svg|mp4|webm))?$/.test(nome);
 for (const [mid, m] of usadas) {
   const orig = path.join(RAIZ, m.arquivo_neutro);
   const nome = path.basename(orig);
-  if (!/^[a-z0-9-]+\.(webp|png|jpg|svg|mp4|webm)$/.test(nome)) erro(`${mid}: nome de arquivo não neutro "${nome}"`);
+  if (pendentes.has(mid)) {
+    midia[mid] = { pendente: true, requisito: m.requisito, descricao: m.anotacao_prevista && !m.anotacao_prevista.startsWith('[') ? m.anotacao_prevista : m.modalidade, tipo: m.tipo };
+    continue;
+  }
+  if (!neutro(nome)) erro(`${mid}: nome de arquivo não neutro "${nome}"`);
   const item = { credito: credito(m), referencia: referencia(m), tipo: m.tipo };
   if (m.tipo === 'ilustracao' && nome.endsWith('.svg')) item.svg = ler(orig).replace(/<\?xml[^>]*>\s*/, '');
-  else { fs.copyFileSync(orig, path.join(DIST, 'assets', nome)); item.src = `assets/${nome}`; }
+  else if (ehPilha(m)) {
+    fs.mkdirSync(path.join(DIST, 'assets', nome), { recursive: true });
+    item.frames = framesDe(orig).map((f) => {
+      if (!neutro(f)) erro(`${mid}: nome de corte não neutro "${f}"`);
+      fs.copyFileSync(path.join(orig, f), path.join(DIST, 'assets', nome, f));
+      return `assets/${nome}/${f}`;
+    });
+    for (const v of fs.readdirSync(orig).filter((f) => /\.(mp4|webm)$/.test(f))) {
+      fs.copyFileSync(path.join(orig, v), path.join(DIST, 'assets', nome, v));
+      item.video = item.video || `assets/${nome}/${v}`;
+    }
+  } else { fs.copyFileSync(orig, path.join(DIST, 'assets', nome)); item.src = `assets/${nome}`; }
   midia[mid] = item;
 }
 if (erros.length) { console.error(erros.join('\n')); process.exit(1); }
@@ -171,4 +203,6 @@ for (const f of fs.readdirSync(DIST, { recursive: true })) for (const t of verif
 if (erros.length) { console.error(erros.join('\n')); fs.rmSync(DIST, { recursive: true, force: true }); process.exit(1); }
 
 const kb = (fs.statSync(path.join(DIST, 'index.html')).size / 1024).toFixed(0);
-console.log(`Build ${PILOTO ? 'PILOTO ' : ''}ok → ${rel(DIST)}/index.html (${kb} KB) · ${cenas.length} cenas · ${usadas.size} mídias · custo ideal ${custoIdeal} · sigilo ok (${termos.length} termos, ${cenasAntes.size} cenas checadas)`);
+if (avisos.length) console.log('Avisos (rascunho): ' + avisos.join(' · '));
+if (pendentes.size) console.log(`Imagens pendentes (${pendentes.size}): ` + [...pendentes].map(([k, v]) => `${k} (${v})`).join(' · '));
+console.log(`Build ${FINAL ? '' : MODO.toUpperCase() + ' '}ok → ${rel(DIST)}/index.html (${kb} KB) · ${cenas.length} cenas · ${usadas.size} mídias · custo ideal ${custoIdeal} · sigilo ok (${termos.length} termos, ${cenasAntes.size} cenas checadas)`);

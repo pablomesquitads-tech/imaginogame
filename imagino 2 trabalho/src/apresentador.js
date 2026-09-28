@@ -76,7 +76,7 @@
     const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
     if (k === 'f') { e.preventDefault(); return aviso('F só funciona na janela da plateia (o navegador exige o gesto lá).'); }
     if (k === 'p') { e.preventDefault(); return; }
-    if (['ArrowRight', ' ', 'PageDown', 'Enter', '1', '2', '3', '4', 'z', 'a', 'r'].includes(k) || /^(Digit|Numpad)[1-4]$/.test(e.code)) {
+    if (['ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'PageDown', 'Enter', '1', '2', '3', '4', 'z', 'a', 'r'].includes(k) || /^(Digit|Numpad)[1-4]$/.test(e.code)) {
       e.preventDefault();
       enviar({ tipo: 'tecla', key: e.key, code: e.code, shift: e.shiftKey });
     }

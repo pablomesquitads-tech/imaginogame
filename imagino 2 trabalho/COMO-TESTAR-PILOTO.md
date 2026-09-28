@@ -24,7 +24,7 @@ O piloto usa **conteúdo fictício** (torção de tornozelo, imagem de teste geo
 | 6 | Menu e consequência | 1 ou 3 → consequência com "+N" → volta ao menu; a opção fica marcada "já tentada" | ☐ |
 | 7 | Dica | Depois de 2 erros aparece "Preceptor" | ☐ |
 | 8 | **Z desfaz** | Z volta passo a passo, inclusive o custo | ☐ |
-| 9 | Anotação | No resultado, A liga e desliga os círculos âmbar | ☐ |
+| 9 | Anotação e cortes | No resultado, A liga e desliga os círculos âmbar; ↑ e ↓ percorrem 8 cortes e a anotação só aparece no corte 4 | ☐ |
 | 10 | Placar | O fechamento mostra o custo da turma contra o caminho ideal (0) | ☐ |
 | 11 | Reiniciar | R, depois R de novo em até 3 s, volta à capa | ☐ |
 | 12 | Legibilidade | Do fundo da sala: legenda da fala, opções do menu e crédito da imagem | ☐ |

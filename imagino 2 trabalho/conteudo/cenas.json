@@ -2,7 +2,473 @@
   "meta": {
     "titulo": "Caso clínico",
     "alvo_total_s": 600,
-    "teto_s": 1200
+    "teto_s": 1200,
+    "gerado_de": "conteudo/roteiro.md",
+    "status_roteiro": "STATUS: RASCUNHO — aguardando aprovação"
   },
-  "cenas": []
+  "cenas": [
+    {
+      "id": "abertura-capa",
+      "bloco": 1,
+      "tipo": "expositiva",
+      "fala": "",
+      "layout": "capa",
+      "titulo": "Caso clínico",
+      "notas": "Título/capa neutros, propostos por mim (decisão D3). Nenhum termo do diagnóstico. Custo zerado no placar.",
+      "tempo_alvo_s": 10
+    },
+    {
+      "id": "abertura-regras",
+      "bloco": 1,
+      "tipo": "expositiva",
+      "fala": "Vocês são a equipe de plantão. Em cada decisão, levantem o braço pela conduta que escolherem; vale a maioria. Conduta errada custa pontos. O objetivo é fechar o diagnóstico gastando o mínimo.",
+      "legenda": "Vocês são a equipe de plantão.",
+      "itens": [
+        "A turma decide cada conduta por maioria de braços levantados.",
+        "Conduta errada custa pontos (tempo e recursos).",
+        "Objetivo: chegar ao diagnóstico com o menor custo."
+      ],
+      "notas": "Ler as regras sem antecipar nada do caso. Mostrar o custo em 0. Explicar que, após 2 erros no mesmo menu, o preceptor dá uma dica.",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "historia-fala",
+      "bloco": 2,
+      "tipo": "fala",
+      "legendas": [
+        {
+          "quem": "N",
+          "texto": "Marcos, 34 anos, trazido ao pronto atendimento pela esposa, Daniela. Queixa: um apagão hoje cedo."
+        },
+        {
+          "quem": "P",
+          "texto": "Doutor, eu tava tomando café e, do nada, começou um formigamento na minha mão direita. A mão começou a tremer sozinha e eu fiquei esquisito, sem conseguir falar direito."
+        },
+        {
+          "quem": "A",
+          "texto": "Eu vi tudo. Ele ficou com o olhar parado, a mão direita tremendo, depois o braço inteiro duro, e caiu no chão. Tremeu uns dois minutos, babou. Depois ficou meio fora do ar."
+        },
+        {
+          "quem": "P",
+          "texto": "Quando acordei, minha língua tava doendo e eu tava com um sono enorme. O braço direito ficou fraco, dormente, por um tempo."
+        },
+        {
+          "quem": "A",
+          "texto": "Ele já vinha com dor de cabeça de vez em quando. E, faz uns meses, tinha uns momentos que ele parava no meio da frase. A gente achou que era estresse."
+        },
+        {
+          "quem": "P",
+          "texto": "Eu moro no sítio da família, lá no interior, e trabalho na roça. Vim pra cidade visitar minha irmã. Nunca tinha tido nada assim. Bebo pouco, não uso droga."
+        },
+        {
+          "quem": "A",
+          "texto": "Febre, acho que não. Só uma gripe, uns dias atrás."
+        }
+      ],
+      "personagens": {
+        "N": "Triagem",
+        "P": "Marcos",
+        "A": "Daniela"
+      },
+      "ilustracao": "pac-01",
+      "legenda": "Paciente e esposa na triagem. Queixa: \"apagão\" hoje cedo.",
+      "notas": "Ambiguidades intencionais que abrem diferenciais reais: primeira crise do adulto (idiopática × sintomática), \"gripe\" recente (infecção), dor de cabeça (lesão expansiva × cefaleia primária), \"parava no meio da frase\" (crises focais prévias × distração), álcool/droga (crise provocada). Procedência rural aparece sem destaque, ao lado de \"roça\". Não mencionar porcos, água ou saneamento aqui (só no resultado da conduta certa do Menu 1). Dependência da imagem: \"mão direita/braço direito\" pressupõe lesão hemisférica esquerda (região frontoparietal/perirrolândica). Se a imagem escolhida na seção 1A tiver outra lateralidade/localização, ajustar a fala e o resultado do exame (decisão D1).",
+      "tempo_alvo_s": 80
+    },
+    {
+      "id": "menu-conduta-1",
+      "bloco": 3,
+      "tipo": "menu",
+      "legenda": "Primeira crise, com fraqueza no braço direito depois. Qual a próxima conduta?",
+      "opcoes": [
+        {
+          "tecla": 1,
+          "rotulo": "Iniciar anticonvulsivante e dar alta com retorno ambulatorial",
+          "destino": "cons-m1-alta",
+          "custo": 3,
+          "correta": false,
+          "justificativa": "Alta sem investigar crise focal atrasa o diagnóstico e expõe a nova crise."
+        },
+        {
+          "tecla": 2,
+          "rotulo": "Pedir RM de crânio já, antes de complementar história e exame",
+          "destino": "cons-m1-rm",
+          "custo": 2,
+          "correta": false,
+          "justificativa": "Exame caro sem hipótese direcionada gera protocolo genérico e laudo inespecífico."
+        },
+        {
+          "tecla": 3,
+          "rotulo": "Anamnese dirigida (antecedentes, exposição, sintomas associados) e exame neurológico completo",
+          "destino": "resultado-anamnese-exame",
+          "custo": 0,
+          "correta": true,
+          "justificativa": "A história e o exame direcionam a indicação e o protocolo do exame de imagem."
+        },
+        {
+          "tecla": 4,
+          "rotulo": "Fazer punção lombar de imediato",
+          "destino": "cons-m1-lp",
+          "custo": 3,
+          "correta": false,
+          "justificativa": "Punção sem imagem em déficit focal arrisca herniação se houver efeito de massa."
+        }
+      ],
+      "notas": "Ordem das opções na tela pode ser embaralhada no build (a correta não deve ser sempre a 3). Opção 2 é o erro mais \"defensável\": discutir que a RM depende de uma pergunta clínica (decisão D2). Dica do preceptor após 2 erros: ver dica-m1.",
+      "tempo_alvo_s": 30,
+      "dica": "Uma boa hipótese nasce de uma boa conversa e de um exame à beira do leito. O que ainda não foi perguntado nem examinado?"
+    },
+    {
+      "id": "cons-m1-alta",
+      "bloco": 3,
+      "tipo": "consequencia",
+      "legenda": "Uma semana depois: nova crise, agora com fraqueza persistente no braço direito. Ele volta ao pronto atendimento.",
+      "custo": 3,
+      "justificativa": "Atraso no diagnóstico e risco de nova crise sem investigação.",
+      "notas": "Comentar que crise focal com déficit não deve ser tratada como evento benigno sem imagem.",
+      "tempo_alvo_s": 25
+    },
+    {
+      "id": "cons-m1-rm",
+      "bloco": 3,
+      "tipo": "consequencia",
+      "legenda": "O técnico da RM pergunta a hipótese clínica. Sem história dirigida nem exame, o protocolo é genérico e o laudo, inespecífico. O exame precisará ser repetido.",
+      "custo": 2,
+      "justificativa": "Exame de alto custo pedido sem hipótese direcionada.",
+      "notas": "Reforçar o vínculo entre pergunta clínica e escolha de sequências.",
+      "tempo_alvo_s": 25
+    },
+    {
+      "id": "cons-m1-lp",
+      "bloco": 3,
+      "tipo": "consequencia",
+      "legenda": "A enfermagem pergunta: \"Sem imagem antes?\" A punção é suspensa por risco. Horas perdidas.",
+      "custo": 3,
+      "justificativa": "Punção sem imagem prévia em déficit focal: risco de herniação se houver efeito de massa.",
+      "tempo_alvo_s": 25
+    },
+    {
+      "id": "resultado-anamnese-exame",
+      "bloco": 3,
+      "tipo": "resultado",
+      "fala": "Daniela: Esqueci de contar, doutor: lá no sítio a gente cria uns porcos soltos no quintal, e a água é de poço.\nMarcos: E essa dor de cabeça vem e vai faz uns meses.",
+      "secoes": [
+        {
+          "titulo": "EXAME NEUROLÓGICO",
+          "texto": "Vigil, orientado, afebril. Paresia leve em membro superior direito. Reflexos vivos à direita; Babinski à direita. Sem sinais meníngeos. Fundo de olho sem papiledema."
+        },
+        {
+          "titulo": "ANAMNESE DIRIGIDA",
+          "texto": "Mora em sítio; lida com roça e com criação de porcos soltos no quintal. Água de poço, sem esgoto tratado. Cefaleia intermitente há alguns meses. Sem HIV conhecido; sem imunossupressores."
+        }
+      ],
+      "notas": "Este é o momento da \"informação epidemiológica mais forte\". Discutir: sinais piramidais direitos + crise focal = lesão estrutural em hemisfério esquerdo (localização depende da imagem escolhida, decisão D1). Se o grupo quiser, pedir que a turma liste a hipótese de lesão estrutural (tumor, infecção, vascular). Decisão D4: \"porcos soltos\" e \"água de poço\" são deixados em texto visível antes da revelação de propósito, por serem o dado epidemiológico que a anamnese dirigida deve recompensar; não entram em termos-proibidos.txt.",
+      "tempo_alvo_s": 40
+    },
+    {
+      "id": "menu-imagem-2",
+      "bloco": 4,
+      "tipo": "menu",
+      "legenda": "Crise focal com déficit e cefaleia. Qual exame de imagem primeiro?",
+      "opcoes": [
+        {
+          "tecla": 1,
+          "rotulo": "Radiografia simples de crânio",
+          "destino": "cons-m2-rx",
+          "custo": 1,
+          "correta": false,
+          "justificativa": "Sem rendimento para lesão intracraniana; atrasa o diagnóstico."
+        },
+        {
+          "tecla": 2,
+          "rotulo": "Angiotomografia de crânio",
+          "destino": "cons-m2-angio",
+          "custo": 2,
+          "correta": false,
+          "justificativa": "Sem pergunta vascular no quadro; contraste e radiação sem necessidade."
+        },
+        {
+          "tecla": 3,
+          "rotulo": "TC de crânio sem contraste",
+          "destino": "resultado-tc",
+          "custo": 1,
+          "correta": true,
+          "justificativa": "Rápida e disponível; exclui hemorragia e efeito de massa e mostra calcificações."
+        },
+        {
+          "tecla": 4,
+          "rotulo": "PET-CT cerebral",
+          "destino": "cons-m2-pet",
+          "custo": 3,
+          "correta": false,
+          "justificativa": "Custo elevado e baixa disponibilidade; sem papel na avaliação inicial."
+        }
+      ],
+      "notas": "Custo 1 da opção correta compõe o \"custo do caminho ideal\" no placar (ver fechamento-placar, decisão D5). Se a turma perguntar \"por que não RM direto?\": TC é o primeiro exame na urgência pela disponibilidade e pela sensibilidade a calcificação e hemorragia; a RM entra a seguir para caracterizar (é o Menu 3). Ver decisão D2.",
+      "tempo_alvo_s": 30,
+      "dica": "Na urgência, qual exame responde rápido às perguntas mais perigosas — sangue, massa — e ainda enxerga cálcio?"
+    },
+    {
+      "id": "cons-m2-rx",
+      "bloco": 4,
+      "tipo": "consequencia",
+      "legenda": "Radiografia de crânio sem alterações. Nada foi esclarecido; o tempo passou.",
+      "custo": 1,
+      "justificativa": "Exame sem rendimento para lesão intracraniana.",
+      "tempo_alvo_s": 20
+    },
+    {
+      "id": "cons-m2-angio",
+      "bloco": 4,
+      "tipo": "consequencia",
+      "legenda": "Angiotomografia sem oclusão nem aneurisma. Contraste iodado e radiação sem uma pergunta vascular a responder.",
+      "custo": 2,
+      "justificativa": "Indicação vascular não sustentada pelo quadro.",
+      "tempo_alvo_s": 25
+    },
+    {
+      "id": "cons-m2-pet",
+      "bloco": 4,
+      "tipo": "consequencia",
+      "legenda": "O PET-CT não está disponível na urgência. O paciente aguarda sem diagnóstico.",
+      "custo": 3,
+      "justificativa": "Custo elevado e baixa disponibilidade, sem papel na avaliação inicial.",
+      "tempo_alvo_s": 20
+    },
+    {
+      "id": "resultado-tc",
+      "bloco": 4,
+      "tipo": "resultado",
+      "fala": "A TC mostra pontos de cálcio no parênquima e uma área hipodensa à esquerda. Para caracterizar a lesão, o radiologista sugere RM.",
+      "secoes": [
+        {
+          "titulo": "TC DE CRÂNIO SEM CONTRASTE",
+          "texto": "Calcificações puntiformes no parênquima cerebral (setas). Área hipodensa frontoparietal esquerda, com discreto efeito de massa. Sem hemorragia. Ventrículos de calibre normal. Sugerido complemento com RM de crânio."
+        }
+      ],
+      "imagens": [
+        {
+          "manifesto_id": "img-01",
+          "anotacao": "img-01-anot",
+          "pilha": "pilha-01",
+          "rotulo": "TC sem contraste · axial"
+        }
+      ],
+      "notas": "Ativar a camada de anotação (tecla A) sobre as calcificações. Descrição da lesão hipodensa e da localização deve ser ajustada ao caso real escolhido (decisão D1). Não afirmar número de calcificações (depende da imagem).",
+      "tempo_alvo_s": 45
+    },
+    {
+      "id": "resultado-rm",
+      "bloco": 5,
+      "tipo": "resultado",
+      "fala": "A RM mostra uma lesão com realce em anel e edema ao redor. O diferencial do realce anelar é amplo. Como vocês vão separar essas possibilidades?",
+      "secoes": [
+        {
+          "titulo": "RM DE CRÂNIO COM CONTRASTE",
+          "texto": "T1 pós-gadolínio: lesão com realce periférico em anel, frontoparietal esquerda. FLAIR: edema perilesional. Calcificações puntiformes já vistas na TC. Diferencial do realce anelar: abscesso, tuberculoma, toxoplasmose, glioma de alto grau, metástase."
+        }
+      ],
+      "imagens": [
+        {
+          "manifesto_id": "img-02",
+          "anotacao": "img-02-anot",
+          "rotulo": "T1 pós-gadolínio"
+        },
+        {
+          "manifesto_id": "img-03",
+          "anotacao": "img-03-anot",
+          "rotulo": "FLAIR"
+        }
+      ],
+      "notas": "Ativar anotação no anel. A lista do diferencial omite de propósito a hipótese diagnóstica do caso; a turma deve chegar a ela pela imagem. Se a turma disser \"tuberculoma\", \"toxoplasmose\" etc., valorizar o raciocínio e pedir que digam que achado de imagem os separaria. Discussão de DWI/ADC e espectroscopia pode ser mencionada, mas o Menu 3 quer uma etapa de caracterização não invasiva do interior da lesão.",
+      "tempo_alvo_s": 45
+    },
+    {
+      "id": "menu-diferencial-3",
+      "bloco": 5,
+      "tipo": "menu",
+      "legenda": "Lesão com realce em anel e edema. Como diferenciar sem se precipitar?",
+      "opcoes": [
+        {
+          "tecla": 1,
+          "rotulo": "Iniciar esquema tuberculostático empírico",
+          "destino": "cons-m3-tb",
+          "custo": 3,
+          "correta": false,
+          "justificativa": "Tratamento empírico sem hipótese sustentada: toxicidade e diagnóstico adiado."
+        },
+        {
+          "tecla": 2,
+          "rotulo": "Encaminhar para biópsia estereotáxica imediata",
+          "destino": "cons-m3-biopsia",
+          "custo": 3,
+          "correta": false,
+          "justificativa": "Procedimento invasivo antes de esgotar a caracterização não invasiva."
+        },
+        {
+          "tecla": 3,
+          "rotulo": "Repetir a TC com contraste e reavaliar",
+          "destino": "cons-m3-tc",
+          "custo": 2,
+          "correta": false,
+          "justificativa": "Repetir exame de menor resolução: radiação e custo sem informação nova."
+        },
+        {
+          "tecla": 4,
+          "rotulo": "Complementar a RM com T2 3D de alta resolução e difusão, olhando o interior da lesão",
+          "destino": "revelacao",
+          "custo": 1,
+          "correta": true,
+          "justificativa": "Caracteriza o conteúdo e o interior da lesão sem procedimento invasivo."
+        }
+      ],
+      "notas": "Custo 1 da opção correta compõe o custo do caminho ideal (D5). O texto da opção 4 não nomeia o achado. Ordem embaralhável no build.",
+      "tempo_alvo_s": 40,
+      "dica": "Antes de tratar às cegas ou de operar: o que a imagem ainda não mostrou sobre o interior dessa lesão? Existe sequência que responde isso sem agulha?"
+    },
+    {
+      "id": "cons-m3-tb",
+      "bloco": 5,
+      "tipo": "consequencia",
+      "legenda": "Iniciado esquema tuberculostático empírico. Nos dias seguintes: náuseas e elevação de transaminases. A lesão continua sem explicação.",
+      "custo": 3,
+      "justificativa": "Tratamento empírico sem hipótese sustentada: toxicidade e diagnóstico adiado.",
+      "notas": "Não afirmar prevalência ou taxas de hepatotoxicidade (sem número verificado).",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "cons-m3-biopsia",
+      "bloco": 5,
+      "tipo": "consequencia",
+      "legenda": "O neurocirurgião pede, antes de operar, uma caracterização completa da lesão por imagem. A biópsia é adiada.",
+      "custo": 3,
+      "justificativa": "Procedimento invasivo antes de esgotar a caracterização não invasiva.",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "cons-m3-tc",
+      "bloco": 5,
+      "tipo": "consequencia",
+      "legenda": "A TC com contraste repetida mostra o mesmo padrão, com menos detalhe da lesão do que a RM já obtida.",
+      "custo": 2,
+      "justificativa": "Repetir exame de menor resolução: radiação e custo sem informação nova.",
+      "tempo_alvo_s": 25
+    },
+    {
+      "id": "revelacao",
+      "bloco": 6,
+      "tipo": "revelacao",
+      "fala": "O interior da lesão mostra o escólex. É neurocisticercose: a forma larvária da Taenia solium no sistema nervoso central.",
+      "titulo": "Neurocisticercose",
+      "secoes": [
+        {
+          "texto": "RM 3D T2 de alta resolução: lesão cística com escólex visível (ponto excêntrico no interior). Critério ABSOLUTO — Del Brutto 2017."
+        }
+      ],
+      "imagens": [
+        {
+          "manifesto_id": "img-04",
+          "anotacao": "img-04-anot",
+          "pilha": "pilha-02",
+          "rotulo": "T2 3D de alta resolução"
+        }
+      ],
+      "notas": "Primeira menção ao diagnóstico. Ativar a anotação (tecla A) sobre o escólex; mostrar par limpo/anotado. Nome do sinal para a discussão oral: \"cisto com ponto excêntrico\" (descrição clássica em inglês: hole-with-dot). A fase evolutiva vinculada a um cisto com escólex e realce da parede (vesicular/coloidal-vesicular) depende da imagem real: usar a descrição do caso na fonte, não a minha (regra 1A.4). Crédito (autor + rID) gerado pelo build; URL só no fechamento.",
+      "tempo_alvo_s": 45
+    },
+    {
+      "id": "virada-fases",
+      "bloco": 7,
+      "tipo": "expositiva",
+      "fala": "O cisto passa por quatro fases. Quando degenera, o organismo reage: aparece o realce em anel e o edema. E este paciente tem calcificações antigas e uma lesão ativa ao mesmo tempo, o que fala de exposição prolongada.",
+      "titulo": "Fases evolutivas",
+      "itens": [
+        "Vesicular → coloidal → granular nodular → nodular calcificada.",
+        "Realce anelar e edema = reação inflamatória à degeneração do cisto.",
+        "Neste caso coexistem calcificações antigas e lesão ativa."
+      ],
+      "notas": "Máximo 3 ideias. Se houver imagens ilustrativas das quatro fases (requisito R06, opcional), mostrar lado a lado. \"Exposição prolongada\" é inferência didática; formular como \"sugere lesões em momentos diferentes\", não como fato do caso. Nomes das fases: usar os de R3 (Osborn) e conferir com R7.",
+      "tempo_alvo_s": 40
+    },
+    {
+      "id": "virada-tratamento",
+      "bloco": 7,
+      "tipo": "expositiva",
+      "fala": "Lesão ativa pede antiparasitário com corticoide e controle das crises. Antes, é preciso descartar hidrocefalia e cisticercose ocular. Calcificação sozinha não recebe antiparasitário.",
+      "titulo": "Tratamento",
+      "itens": [
+        "Lesões ativas: antiparasitário (albendazol, com ou sem praziquantel) + corticoide + anticrise.",
+        "Antes: descartar hidrocefalia e cisto no olho.",
+        "Só calcificações: sem antiparasitário; tratar as crises."
+      ],
+      "notas": "Sem doses nos slides. Para perguntas: doses e duração estão em R1 [VERIFICAR: albendazol e duração; associação com praziquantel quando há mais de um cisto viável]. Mencionar que a conduta detalhada depende do número e do tipo de lesão e que é do time de neurologia/infectologia. Rastreio de contatos domiciliares (portador de tênia) pode ser citado em fala livre [VERIFICAR indicação em R1].",
+      "tempo_alvo_s": 40
+    },
+    {
+      "id": "criterios-imagem",
+      "bloco": 8,
+      "tipo": "expositiva",
+      "fala": "Cada pista de imagem cai numa categoria. O escólex é critério absoluto. As calcificações típicas e a lesão com realce são critérios de neuroimagem maiores.",
+      "titulo": "Pistas de imagem → critérios",
+      "itens": [
+        "Escólex dentro do cisto (RM 3D T2) → ABSOLUTO.",
+        "Calcificações parenquimatosas típicas (TC) → NEUROIMAGEM, MAIOR.",
+        "Lesão com realce em anel (RM) → NEUROIMAGEM, MAIOR."
+      ],
+      "notas": "Confirmativos (resolução do cisto após antiparasitário; resolução espontânea de lesão única com realce; migração de cisto ventricular) não se aplicam neste momento do caso (sem seguimento). Menores (hidrocefalia, realce leptomeníngeo) não foram descritos. Dizer isso em voz alta fecha as quatro categorias de neuroimagem.",
+      "tempo_alvo_s": 40
+    },
+    {
+      "id": "criterios-conclusao",
+      "bloco": 8,
+      "tipo": "expositiva",
+      "fala": "A crise focal e a vida no sítio contam como critérios clínicos e de exposição. Mas o diagnóstico já é definitivo: um critério absoluto basta.",
+      "titulo": "História e exposição → critérios",
+      "itens": [
+        "Crise focal → clínico: manifestação sugestiva.",
+        "Vive em sítio rural, com criação de porcos → clínico/exposição: origem/residência em área de risco.",
+        "CERTEZA: DEFINITIVA — o critério absoluto basta."
+      ],
+      "notas": "Pelos critérios, dois critérios maiores de neuroimagem (calcificações + lesão com realce) mais exposição também bastariam para definitivo; o escólex torna isso desnecessário. Citar isso em voz alta mostra por que a imagem carrega o diagnóstico. Rótulo maior/menor de cada item clínico/exposição e o significado exato de \"exposição\" para o nível de certeza: [VERIFICAR] no texto completo de R2 antes de aprovar esta cena. Não citar sensibilidade/especificidade sem verificar (existe estudo de validação em lesões ventriculares no PubMed, mas não é o caso aqui).",
+      "tempo_alvo_s": 30
+    },
+    {
+      "id": "fechamento-mensagens",
+      "bloco": 9,
+      "tipo": "fechamento",
+      "fala": "lê as três mensagens.",
+      "layout": "mensagens",
+      "titulo": "Mensagens",
+      "itens": [
+        "Crise focal em adulto pede imagem, não alta com receita.",
+        "A TC vê o cálcio; a RM vê o interior da lesão: o exame certo responde à pergunta clínica.",
+        "Ver o escólex fecha o diagnóstico; sem ele, a soma de imagem e exposição sustenta o raciocínio."
+      ],
+      "notas": "Uma frase por mensagem. Não acrescentar estatística.",
+      "tempo_alvo_s": 20
+    },
+    {
+      "id": "fechamento-placar",
+      "bloco": 9,
+      "tipo": "fechamento",
+      "fala": "A turma gastou {custo_turma} pontos. O caminho ideal custa 2.",
+      "notas": "Variáveis preenchidas pelo motor. O custo do caminho ideal (2) = TC (1) + complemento da RM (1); a conduta correta do Menu 1 custa 0 (D5). Comparar erro mais caro do grupo com a consequência clínica real.",
+      "tempo_alvo_s": 15
+    },
+    {
+      "id": "fechamento-referencias",
+      "bloco": 9,
+      "tipo": "fechamento",
+      "fala": "",
+      "layout": "referencias",
+      "titulo": "Referências",
+      "itens": [
+        "White AC Jr, et al. IDSA/ASTMH 2017. Clin Infect Dis 2018;66(8):e49–e75. doi:10.1093/cid/cix1084",
+        "Del Brutto OH, et al. Revised diagnostic criteria for neurocysticercosis. J Neurol Sci 2017;372:202–210. doi:10.1016/j.jns.2016.11.045",
+        "Osborn AG; Brant & Helms; Novelline; Mello Jr (edições a confirmar)."
+      ],
+      "notas": "URLs completas de casos só aqui (regra da seção 2). Completar edições dos livros após [VERIFICAR].",
+      "tempo_alvo_s": 10
+    }
+  ]
 }
